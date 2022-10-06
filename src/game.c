@@ -59,10 +59,18 @@ int main(int argc,char *argv[])
     gf3d_camera_set_scale(vector3d(1,1,1));
     player_new(vector3d(0,0,20));
     
+    //WULF
+    int beginTime = 0;
+    //WULF
+
+
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
     {
+        //WULF
+        beginTime = SDL_GetTicks64();
+        //WULF
         gfc_input_update();
         SDL_GetMouseState(&mousex,&mousey);
         
@@ -83,6 +91,12 @@ int main(int argc,char *argv[])
             //2D draws
                 gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
         gf3d_vgraphics_render_end();
+
+        //WULF
+        //Timeout to lock at 60 fps, can adjust by changing this int
+        while(SDL_GetTicks64() < (beginTime + 16)){}
+        //WULF
+
 
         if (gfc_input_command_down("exit"))done = 1; // exit condition
     }    

@@ -26,7 +26,8 @@ Entity *agumon_new(Vector3D position)
 void agumon_think(Entity *self)
 {
     if (!self)return;
-    self->rotation.x += -0.002;
+    self->rotation.x += -0.2;
+    self->rotation.y += 0.05;
 }
 
 /*eol@eof*/
