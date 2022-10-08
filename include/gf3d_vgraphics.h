@@ -1,6 +1,6 @@
 #ifndef __GF3D_VGRAPHICS_H__
 #define __GF3D_VGRAPHICS_H__
-
+#include <SDL.h>
 #include <vulkan/vulkan.h>
 #include "gfc_vector.h"
 #include "gfc_matrix.h"
@@ -11,6 +11,11 @@
 #define GF3D_VGRAPHICS_DISCRETE 1
 //Choosing whether to use discrete [1] or integrated graphics [0]
 
+
+/**
+ * @return a pointer to the main game window
+ */
+SDL_Window* gf3d_vgraphics_get_SDL_Window();
 /**
  * @brief init Vulkan / SDL, setup device and initialize infrastructure for 3d graphics
  * @param config json file containing setup information
@@ -95,6 +100,8 @@ Pipeline *gf3d_vgraphics_get_graphics_overlay_pipeline();
 Command *gf3d_vgraphics_get_graphics_command_pool();
 
 VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format);
+
+
 
 
 #endif

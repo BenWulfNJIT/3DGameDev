@@ -17,6 +17,8 @@ typedef struct Entity_S
     void       (*damage)(struct Entity_S *self, float damage, struct Entity_S *inflictor); /**<pointer to the think function*/
     void       (*onDeath)(struct Entity_S *self); /**<pointer to an funciton to call when the entity dies*/
     
+    Uint8       cameraLock; //0 for unlock, 1 for locked
+    Vector2D    cameraMove;
     Vector3D    position;  
     Vector3D    velocity;
     Vector3D    acceleration;

@@ -346,6 +346,7 @@ void gf3d_vgraphics_setup(
     slog_sync();
 }
 
+
 void gf3d_vgraphics_close()
 {
     slog("cleaning up vulkan graphics");
@@ -594,6 +595,12 @@ VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format)
 
     return imageView;
 }
+
+SDL_Window* gf3d_vgraphics_get_SDL_Window()
+{
+    return gf3d_vgraphics.main_window;
+}
+
 
 /*eol@eof*/
 

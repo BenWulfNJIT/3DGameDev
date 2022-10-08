@@ -27,8 +27,13 @@ int main(int argc,char *argv[])
     
     Sprite *mouse = NULL;
     int mousex,mousey;
+
+    //SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
     float mouseFrame = 0;
     World *w;
+    Entity* player = NULL;
+
+
     
     for (a = 1; a < argc;a++)
     {
@@ -49,7 +54,7 @@ int main(int argc,char *argv[])
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
     
     w = world_load("config/testworld.json");
-    
+
     for (a = 0; a < 10;a++)
     {
         agumon_new(vector3d(a * 10 -50,0,0));
@@ -57,10 +62,20 @@ int main(int argc,char *argv[])
     
     slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
-    player_new(vector3d(0,0,20));
+    player = player_new(vector3d(0,0,20));
+    player->cameraLock = 0;
+
     
     //WULF
     int beginTime = 0;
+    int startMouseX, startMouseY, diffX, diffY;
+
+    SDL_SetRelativeMouseMode(1);
+
+    int screenWidth, screenHeight;
+
+    SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
+
     //WULF
 
 
@@ -70,12 +85,35 @@ int main(int argc,char *argv[])
     {
         //WULF
         beginTime = SDL_GetTicks64();
+
         //WULF
+
+
+        if(mousex == screenWidth/2 && mousey == screenHeight/2)
+        {
+
+            startMouseX = mousex;
+            startMouseY = mousey;
+        }
+        slog("Size: %i, %i", screenWidth, screenHeight);
+        if(!player->cameraLock) SDL_WarpMouseInWindow(gf3d_vgraphics_get_SDL_Window(), screenWidth/2, screenHeight/2);
+
         gfc_input_update();
+
         SDL_GetMouseState(&mousex,&mousey);
-        
+
+
+        diffX = mousex - startMouseX;
+        diffY = mousey - startMouseY;
+        player->cameraMove = vector2d(diffX, diffY);
+
+        //slog("coords: %i, %i", mousex, mousey);
+        slog("uh: %i, %i", mousex, mousey);
+
+
         mouseFrame += 0.01;
         if (mouseFrame >= 16)mouseFrame = 0;
+
         entity_think_all();
         entity_update_all();
         gf3d_camera_update_view();
@@ -89,13 +127,36 @@ int main(int argc,char *argv[])
                 world_draw(w);
                 entity_draw_all();
             //2D draws
-                gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
-        gf3d_vgraphics_render_end();
+                if(player->cameraLock)
+                {
+                    gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
+                }
+
+                gf3d_vgraphics_render_end();
 
         //WULF
         //Timeout to lock at 60 fps, can adjust by changing this int
         while(SDL_GetTicks64() < (beginTime + 16)){}
         //WULF
+
+
+        if(gfc_input_key_pressed("ESCAPE"))
+        {
+            slog("Pressed");
+            if(!player->cameraLock)
+            {
+                player->cameraLock = 1;
+                SDL_SetRelativeMouseMode(0);
+
+
+
+            }
+            else {
+                player->cameraLock = 0;
+                SDL_SetRelativeMouseMode(1);
+
+            }
+        }
 
 
         if (gfc_input_command_down("exit"))done = 1; // exit condition
