@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <math.h>
 #include "simple_logger.h"
 #include "gfc_types.h"
 #include "gfc_input.h"
@@ -38,7 +39,7 @@ void player_think(Entity *self)
     Vector3D forward;
     Vector3D right;
     Vector3D up;
-    float temp1, temp2;
+    float moveY, moveX;
     const Uint8 * keys;
     keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
     //int newMouseX, newMouseY, currentMouseX, currentMouseY;
@@ -48,8 +49,12 @@ void player_think(Entity *self)
 
     //if( self->rotation.x >= 6.
     if(self->rotation.z >= 6.283) self->rotation.z = 0;
+    else if(self->rotation.z <=0) self->rotation.z =6.283;
+
+
+    //if(self->rotation.z<= 0
     //wif(self->rotation.z <= 0) self->rotation.z = 6.283 - self->rotation.z;
-    slog("z: %f", self->rotation.z);
+    //slog("z: %f", self->rotation.z);
 
 
     vector3d_angle_vectors(self->rotation, &forward, &right, &up);
@@ -84,19 +89,46 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0050;
 */
 
-    temp1 = self->rotation.x * 0.1;
-    temp2 = self->rotation.z * 0.1;
+    //temp1 = self->rotation.x * 0.1;
+    //temp2 = self->rotation.z * 0.1;
+
+    //moveY = sin(self->rotation.z+1.57);
+    //moveX = cos(self->rotation.z+1.57);
+
+    //slog("x %f, y %f", temp1, moveX);
     //slog("1 %i",temp1);
+
+    //TODO: move this into a physics apply_velocity function
+    //TODO: also sorry the random floats are divisions of pie
     if (keys[SDL_SCANCODE_W])
     {
-        //vector3d_add(self->position,self->position,forward);
-        //slog("Vector3D %f, %f, %f", self->rotation.x, self->rotation.y, self->rotation.z);
-        self->position.x += temp1;
-        //self->position.y += temp2;
-
+        moveY = sin(self->rotation.z+1.57);
+        moveX = cos(self->rotation.z+1.57);
+        self->position.x += moveX;
+        self->position.y += moveY;
+    }
+    if(keys[SDL_SCANCODE_A])
+    {
+        moveY = sin(self->rotation.z+3.14);
+        moveX = cos(self->rotation.z+3.14);
+        self->position.x += moveX;
+        self->position.y += moveY;
     }
 
-
+    if(keys[SDL_SCANCODE_D])
+    {
+        moveY = sin(self->rotation.z);
+        moveX = cos(self->rotation.z);
+        self->position.x += moveX;
+        self->position.y += moveY;
+    }
+    if(keys[SDL_SCANCODE_S])
+    {
+        moveY = sin(self->rotation.z+4.71);
+        moveX = cos(self->rotation.z+4.71);
+        self->position.x += moveX;
+        self->position.y += moveY;
+    }
 
 
 
