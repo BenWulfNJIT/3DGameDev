@@ -68,7 +68,7 @@ int main(int argc,char *argv[])
     
     //WULF
     int beginTime = 0;
-    int startMouseX, startMouseY, diffX, diffY;
+    float startMouseX, startMouseY, diffX, diffY;
 
     SDL_SetRelativeMouseMode(1);
     SDL_SetWindowGrab(gf3d_vgraphics_get_SDL_Window(), 1);
@@ -87,7 +87,7 @@ int main(int argc,char *argv[])
         //WULF
         beginTime = SDL_GetTicks64();
 
-        //WULF
+
 
 
         if(mousex == screenWidth/2 && mousey == screenHeight/2)
@@ -103,12 +103,13 @@ int main(int argc,char *argv[])
         SDL_GetMouseState(&mousex,&mousey);
 
 
-        diffX = mousex - startMouseX;
-        diffY = mousey - startMouseY;
+        diffX = (mousex - startMouseX)/16;
+        diffY = (mousey - startMouseY)/16;
+        //if(diffX != 0){ slog("Speed = %f", diffX); }
         player->cameraMove = vector2d(diffX, diffY);
 
 
-
+//WULF
         mouseFrame += 0.01;
         if (mouseFrame >= 16)mouseFrame = 0;
 

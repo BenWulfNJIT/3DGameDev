@@ -77,18 +77,24 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0050;
 
 
-        SDL_PumpEvents();
+        //SDL_PumpEvents();
 
+//slog("angle: %f", self->rotation.x);
 
-if (gfc_input_key_held("W"))
-{
-    slog("held");
-}
     if(self->cameraLock == 0)
     {
-        vector2d_set_magnitude(&self->cameraMove, 0.1);
-        self->rotation.x += self->cameraMove.y;
-        self->rotation.z += -self->cameraMove.x;
+        //self->cameraMove.x +=1;
+        //self->cameraMove.y += 1;
+        //vector2d_set_magnitude(&self->cameraMove, 0.02);
+        if((self->cameraMove.y + self->rotation.x) <= -1.57 && (self->cameraMove.y + self->rotation.x) >= -4.71)
+        {
+
+        self->rotation.x += (self->cameraMove.y * 0.1);
+        }
+
+
+
+        self->rotation.z += -(self->cameraMove.x * 0.1);
 
     }
 
