@@ -4,6 +4,7 @@
 #include "simple_logger.h"
 
 #include "entity.h"
+#include "physics.h"
 
 typedef struct
 {
@@ -136,6 +137,23 @@ void entity_update_all()
             continue;// skip this iteration of the loop
         }
         entity_update(&entity_manager.entity_list[i]);
+    }
+}
+
+void ApplyGravity()
+{
+    for(int i=0; i<entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        else if(entity_manager.entity_list[i].type == 0)
+        {
+            //slog("Apply gravity to player hopefully");
+            ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
+        }
+
     }
 }
 

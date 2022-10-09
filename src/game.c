@@ -17,6 +17,7 @@
 #include "agumon.h"
 #include "player.h"
 #include "world.h"
+#include "physics.h"
 
 extern int __DEBUG;
 
@@ -55,6 +56,7 @@ int main(int argc,char *argv[])
     
     w = world_load("config/testworld.json");
 
+    //w = world_load("config/grassTest.json");
     for (a = 0; a < 10;a++)
     {
         agumon_new(vector3d(a * 10 -50,0,0));
@@ -62,12 +64,15 @@ int main(int argc,char *argv[])
     
     slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
-    player = player_new(vector3d(0,0,20));
+    player = player_new(vector3d(1200,-1200,500));
+
+
     player->cameraLock = 0;
 
     
     //WULF
     int beginTime = 0;
+    Uint8 snapCamera = 0;
     float startMouseX, startMouseY, diffX, diffY;
 
     SDL_SetRelativeMouseMode(1);
@@ -84,9 +89,11 @@ int main(int argc,char *argv[])
     slog("gf3d main loop begin");
     while(!done)
     {
+
         //WULF
         beginTime = SDL_GetTicks64();
-
+    //slog("x: %f, y: %f, z: %f", player->rotation.x, player->rotation.y, player->rotation.z);
+        slog("height: %f", player->position.z);
 
 
 
@@ -118,6 +125,10 @@ int main(int argc,char *argv[])
         gf3d_camera_update_view();
         gf3d_camera_get_view_mat4(gf3d_vgraphics_get_view_matrix());
 
+        //physics and collision here?
+        ApplyGravity();
+
+
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
         gf3d_vgraphics_render_start();
@@ -138,10 +149,16 @@ int main(int argc,char *argv[])
         while(SDL_GetTicks64() < (beginTime + 16)){}
         //WULF
 
-
+        //initial character spawn view set. it's weird idk
+        if(snapCamera == 0)
+        {
+            player->rotation.x = -3.14;
+            player->rotation.z = 0.5;
+            snapCamera = 1;
+        }
         if(gfc_input_key_pressed("ESCAPE"))
         {
-            slog("Pressed");
+            //slog("Pressed");
             if(!player->cameraLock)
             {
                 player->cameraLock = 1;

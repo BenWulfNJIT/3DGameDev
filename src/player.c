@@ -25,11 +25,14 @@ Entity *player_new(Vector3D position)
     }
     
 //    ent->model = gf3d_model_load("dino");
+    ent->rotation.x = -3.14;
+    ent->rotation.z = 0.5;
     ent->think = player_think;
     ent->update = player_update;
     vector3d_copy(ent->position,position);
-    ent->rotation.x = -M_PI;
+
     ent->cameraMove = vector2d(0,0);
+    ent->type = 0;
     return ent;
 }
 
@@ -45,7 +48,7 @@ void player_think(Entity *self)
     //int newMouseX, newMouseY, currentMouseX, currentMouseY;
     //Vector2D cameraChangeVector = {0,0};
     //newMouseX = SDL_GetMouseState(&newMouseX,&newMouseY);
-
+SDL_PumpEvents();
 
     //if( self->rotation.x >= 6.
     if(self->rotation.z >= 6.283) self->rotation.z = 0;
@@ -131,6 +134,11 @@ void player_think(Entity *self)
     }
 
 
+    //if(keys[SDL_SCANCODE_SPACE])
+    if(gfc_input_key_pressed(" "))
+    {
+        ApplyVelocity(self, vector3d(0,0, 5));
+    }
 
 //slog("angle: %f", self->rotation.x);
 

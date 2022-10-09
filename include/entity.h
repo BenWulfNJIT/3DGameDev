@@ -19,6 +19,8 @@ typedef struct Entity_S
     
     Uint8       cameraLock; //0 for unlock, 1 for locked
     Vector2D    cameraMove;
+    Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world?
+
     Vector3D    position;  
     Vector3D    velocity;
     Vector3D    acceleration;
@@ -79,5 +81,8 @@ void entity_think_all();
  * @brief run the update functions for ALL active entities
  */
 void entity_update_all();
+
+void ApplyGravity();
+
 
 #endif
