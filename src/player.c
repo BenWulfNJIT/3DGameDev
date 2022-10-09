@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include "simple_logger.h"
 #include "gfc_types.h"
-
+#include "gfc_input.h"
 #include "gf3d_camera.h"
 #include "player.h"
 
@@ -39,9 +39,9 @@ void player_think(Entity *self)
     Vector3D up;
     const Uint8 * keys;
     keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-    int newMouseX, newMouseY, currentMouseX, currentMouseY;
-    Vector2D cameraChangeVector = {0,0};
-    newMouseX = SDL_GetMouseState(&newMouseX,&newMouseY);
+    //int newMouseX, newMouseY, currentMouseX, currentMouseY;
+    //Vector2D cameraChangeVector = {0,0};
+    //newMouseX = SDL_GetMouseState(&newMouseX,&newMouseY);
 
 
 
@@ -51,6 +51,7 @@ void player_think(Entity *self)
     vector3d_set_magnitude(&right,0.1);
     vector3d_set_magnitude(&up,0.1);
 
+//old move system
     if (keys[SDL_SCANCODE_W])
     {   
         vector3d_add(self->position,self->position,forward);
@@ -75,6 +76,14 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_RIGHT])self->rotation.z -= 0.0050;
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0050;
 
+
+        SDL_PumpEvents();
+
+
+if (gfc_input_key_held("W"))
+{
+    slog("held");
+}
     if(self->cameraLock == 0)
     {
         vector2d_set_magnitude(&self->cameraMove, 0.1);

@@ -71,6 +71,7 @@ int main(int argc,char *argv[])
     int startMouseX, startMouseY, diffX, diffY;
 
     SDL_SetRelativeMouseMode(1);
+    SDL_SetWindowGrab(gf3d_vgraphics_get_SDL_Window(), 1);
 
     int screenWidth, screenHeight;
 
@@ -95,7 +96,6 @@ int main(int argc,char *argv[])
             startMouseX = mousex;
             startMouseY = mousey;
         }
-        slog("Size: %i, %i", screenWidth, screenHeight);
         if(!player->cameraLock) SDL_WarpMouseInWindow(gf3d_vgraphics_get_SDL_Window(), screenWidth/2, screenHeight/2);
 
         gfc_input_update();
@@ -107,8 +107,6 @@ int main(int argc,char *argv[])
         diffY = mousey - startMouseY;
         player->cameraMove = vector2d(diffX, diffY);
 
-        //slog("coords: %i, %i", mousex, mousey);
-        slog("uh: %i, %i", mousex, mousey);
 
 
         mouseFrame += 0.01;
@@ -147,6 +145,8 @@ int main(int argc,char *argv[])
             {
                 player->cameraLock = 1;
                 SDL_SetRelativeMouseMode(0);
+                SDL_SetWindowGrab(gf3d_vgraphics_get_SDL_Window(), 0);
+
 
 
 
@@ -154,6 +154,8 @@ int main(int argc,char *argv[])
             else {
                 player->cameraLock = 0;
                 SDL_SetRelativeMouseMode(1);
+                SDL_SetWindowGrab(gf3d_vgraphics_get_SDL_Window(), 1);
+
 
             }
         }
