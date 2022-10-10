@@ -33,6 +33,8 @@ Entity *player_new(Vector3D position)
 
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
+    ent->moveType = 0;
+    ent->maxWalkSpeed = 2;
     return ent;
 }
 
@@ -103,36 +105,57 @@ SDL_PumpEvents();
 
     //TODO: move this into a physics apply_velocity function
     //TODO: also sorry the random floats are divisions of pie
+    //TODO: the walking is all sorts of weird sorry
     if (keys[SDL_SCANCODE_W])
     {
         moveY = sin(self->rotation.z+1.57);
         moveX = cos(self->rotation.z+1.57);
-        self->position.x += moveX;
-        self->position.y += moveY;
+        //self->position.x += moveX;
+        //self->position.y += moveY;
+        self->velocity.x += moveX;
+        self->velocity.y += moveY;
+        //ApplyVelocity(self, vector3d(moveX, moveY, 0));
+        self->moveType = 1;
     }
-    if(keys[SDL_SCANCODE_A])
+    else if(keys[SDL_SCANCODE_A])
     {
         moveY = sin(self->rotation.z+3.14);
         moveX = cos(self->rotation.z+3.14);
-        self->position.x += moveX;
-        self->position.y += moveY;
-    }
+        //self->position.x += moveX;
+        //self->position.y += moveY;
+        ApplyVelocity(self, vector3d(moveX, moveY, 0));
+                self->moveType = 1;
 
-    if(keys[SDL_SCANCODE_D])
+
+    }
+    else if(keys[SDL_SCANCODE_D])
     {
         moveY = sin(self->rotation.z);
         moveX = cos(self->rotation.z);
-        self->position.x += moveX;
-        self->position.y += moveY;
+        //self->position.x += moveX;
+       // self->position.y += moveY;
+        ApplyVelocity(self, vector3d(moveX, moveY, 0));
+                self->moveType = 1;
+
+
     }
-    if(keys[SDL_SCANCODE_S])
+    else if(keys[SDL_SCANCODE_S])
     {
         moveY = sin(self->rotation.z+4.71);
         moveX = cos(self->rotation.z+4.71);
-        self->position.x += moveX;
-        self->position.y += moveY;
-    }
+        //self->position.x += moveX;
+        //self->position.y += moveY;
+        ApplyVelocity(self, vector3d(moveX, moveY, 0));
+        self->moveType = 1;
 
+
+    }
+    else
+    {
+        self->moveType = 0;
+        ApplyVelocity(self, vector3d(-self->velocity.x,-self->velocity.y, 0));
+
+    }
 
     //if(keys[SDL_SCANCODE_SPACE])
     if(gfc_input_key_pressed(" "))

@@ -20,6 +20,9 @@ typedef struct Entity_S
     Uint8       cameraLock; //0 for unlock, 1 for locked
     Vector2D    cameraMove;
     Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world?
+    Uint8       moveType; //0 for standstill, 1 for walk, 2 for sprint, 3 for air
+    Uint8       maxWalkSpeed; //unsure of a number rn
+
 
     Vector3D    position;  
     Vector3D    velocity;
@@ -29,6 +32,8 @@ typedef struct Entity_S
     Vector3D    scale;
     Vector3D    rotation;
     
+
+
     Uint32      health;     /**<entity dies when it reaches zero*/
     // WHATEVER ELSE WE MIGHT NEED FOR ENTITIES
     struct Entity_S *target;    /**<entity to target for weapons / ai*/

@@ -5,6 +5,19 @@
 void ApplyVelocity(Entity* ent, Vector3D velocity)
 {
 
+
+    if(ent->type == 0) //handle any player specific velocities
+    {
+        if(ent->moveType == 1) //walkspeed handling
+        {
+            if(ent->velocity.x >= ent->maxWalkSpeed || ent->velocity.y >= ent->maxWalkSpeed)
+            {
+                velocity.x = 0;
+                velocity.y = 0;
+            }
+        }
+    }
+
     if(ent->position.z >= 10)
     {
     ent->velocity.x += velocity.x;

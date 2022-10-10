@@ -93,7 +93,7 @@ int main(int argc,char *argv[])
         //WULF
         beginTime = SDL_GetTicks64();
     //slog("x: %f, y: %f, z: %f", player->rotation.x, player->rotation.y, player->rotation.z);
-        slog("height: %f", player->position.z);
+        //slog("height: %f", player->position.z);
 
 
 
