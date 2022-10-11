@@ -34,7 +34,8 @@ Entity *player_new(Vector3D position)
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
-    ent->maxWalkSpeed = 2;
+    ent->currentSpeed = 0;
+    ent->maxWalkSpeed = 2.5;
     return ent;
 }
 
@@ -112,48 +113,53 @@ SDL_PumpEvents();
         moveX = cos(self->rotation.z+1.57);
         //self->position.x += moveX;
         //self->position.y += moveY;
-        self->velocity.x += moveX;
-        self->velocity.y += moveY;
-        //ApplyVelocity(self, vector3d(moveX, moveY, 0));
+        //self->velocity.x += moveX;
+        //self->velocity.y += moveY;
+        if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+        ApplyVelocity(self, vector3d(moveX*self->currentSpeed, moveY*self->currentSpeed, 0));
         self->moveType = 1;
     }
-    else if(keys[SDL_SCANCODE_A])
+    if(keys[SDL_SCANCODE_A])
     {
         moveY = sin(self->rotation.z+3.14);
         moveX = cos(self->rotation.z+3.14);
         //self->position.x += moveX;
         //self->position.y += moveY;
-        ApplyVelocity(self, vector3d(moveX, moveY, 0));
-                self->moveType = 1;
+if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+        ApplyVelocity(self, vector3d(moveX*self->currentSpeed*0.75, moveY*self->currentSpeed*0.75, 0));
+        self->moveType = 1;
 
 
     }
-    else if(keys[SDL_SCANCODE_D])
+    if(keys[SDL_SCANCODE_D])
     {
         moveY = sin(self->rotation.z);
         moveX = cos(self->rotation.z);
         //self->position.x += moveX;
        // self->position.y += moveY;
-        ApplyVelocity(self, vector3d(moveX, moveY, 0));
-                self->moveType = 1;
+if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+        ApplyVelocity(self, vector3d(moveX*self->currentSpeed*0.75, moveY*self->currentSpeed*0.75, 0));
+        self->moveType = 1;
 
 
     }
-    else if(keys[SDL_SCANCODE_S])
+    if(keys[SDL_SCANCODE_S])
     {
         moveY = sin(self->rotation.z+4.71);
         moveX = cos(self->rotation.z+4.71);
         //self->position.x += moveX;
         //self->position.y += moveY;
-        ApplyVelocity(self, vector3d(moveX, moveY, 0));
+if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+        ApplyVelocity(self, vector3d(moveX*self->currentSpeed*0.5, moveY*self->currentSpeed*0.5, 0));
         self->moveType = 1;
 
 
     }
-    else
+    if(!keys[SDL_SCANCODE_W] && !keys[SDL_SCANCODE_A] && !keys[SDL_SCANCODE_S] && !keys[SDL_SCANCODE_D])
     {
+        self->currentSpeed = 0;
         self->moveType = 0;
-        ApplyVelocity(self, vector3d(-self->velocity.x,-self->velocity.y, 0));
+        ApplyVelocity(self, vector3d(-self->velocity.x*0.1,-self->velocity.y*0.1, 0)); //TODO only apply this while on ground eventually
 
     }
 

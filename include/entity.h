@@ -21,7 +21,8 @@ typedef struct Entity_S
     Vector2D    cameraMove;
     Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world?
     Uint8       moveType; //0 for standstill, 1 for walk, 2 for sprint, 3 for air
-    Uint8       maxWalkSpeed; //unsure of a number rn
+    float       maxWalkSpeed; //unsure of a number rn
+    float       currentSpeed;
 
 
     Vector3D    position;  

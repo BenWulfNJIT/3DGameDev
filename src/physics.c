@@ -8,12 +8,14 @@ void ApplyVelocity(Entity* ent, Vector3D velocity)
 
     if(ent->type == 0) //handle any player specific velocities
     {
+        //float moveMagSquared = (ent->x * ent->x)+(ent->y * ent->y);
+
         if(ent->moveType == 1) //walkspeed handling
         {
-            if(ent->velocity.x >= ent->maxWalkSpeed || ent->velocity.y >= ent->maxWalkSpeed)
+            //if(ent->velocity.x >= ent->maxWalkSpeed || ent->velocity.y >= ent->maxWalkSpeed)
             {
-                velocity.x = 0;
-                velocity.y = 0;
+                ent->velocity.x = 0;
+                ent->velocity.y = 0;
             }
         }
     }
