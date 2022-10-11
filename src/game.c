@@ -57,10 +57,12 @@ int main(int argc,char *argv[])
     w = world_load("config/testworld.json");
 
     //w = world_load("config/grassTest.json");
-    for (a = 0; a < 10;a++)
-    {
-        agumon_new(vector3d(a * 10 -50,0,0));
-    }
+    Entity* agu = agumon_new(vector3d(1000,-1200,20));
+
+   // gf3d_model_draw(agu->model, agu->modelMat);
+
+
+    //gfc_matrix_scale(agu->modelMat, vector3d(10000,10000,10000));
     
     slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
@@ -83,12 +85,17 @@ int main(int argc,char *argv[])
     SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
 
     //WULF
-
+agu->scale = vector3d(1,1,1);
 
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
     {
+
+    agu->scale.x+=0.1;
+        agu->scale.y+=0.1;
+    agu->scale.z+=0.1;
+
 
         //WULF
         beginTime = SDL_GetTicks64();
