@@ -19,7 +19,11 @@ typedef struct Entity_S
     
     Uint8       cameraLock; //0 for unlock, 1 for locked
     Vector2D    cameraMove;
-    Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world?
+
+
+    Vector3D    size; // x: height, y: width, z: depth;
+    //HitBox      hitbox;
+    Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world, 4 for wireframes
     Uint8       moveType; //0 for standstill, 1 for walk, 2 for sprint, 3 for air
     float       maxWalkSpeed; //unsure of a number rn
     float       currentSpeed;
@@ -41,6 +45,14 @@ typedef struct Entity_S
     
     void *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/
 }Entity;
+/*
+typedef struct HitBox_S
+{
+    Vector3D size;
+
+
+}HitBox;
+*/
 
 /**
  * @brief initializes the entity subsystem

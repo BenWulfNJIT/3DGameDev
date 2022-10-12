@@ -1,5 +1,5 @@
 #include <SDL.h>            
-
+#include <math.h>
 #include "simple_logger.h"
 #include "gfc_input.h"
 #include "gfc_vector.h"
@@ -18,6 +18,7 @@
 #include "player.h"
 #include "world.h"
 #include "physics.h"
+#include "wire_frame.h"
 
 extern int __DEBUG;
 
@@ -71,6 +72,7 @@ int main(int argc,char *argv[])
 
     player->cameraLock = 0;
 
+    Entity* wireTest = wire_frame_line_new();
     
     //WULF
     int beginTime = 0;
@@ -84,17 +86,21 @@ int main(int argc,char *argv[])
 
     SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
 
+agu->scale = vector3d(10,10,10);
+
+
+    vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
+    vector3d_copy(wireTest->scale, vector3d(20,20,20));
+
     //WULF
-agu->scale = vector3d(1,1,1);
+
+
+    //wireTest->scale.x += 100;
 
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
     {
-
-    agu->scale.x+=0.1;
-        agu->scale.y+=0.1;
-    agu->scale.z+=0.1;
 
 
         //WULF
@@ -102,6 +108,26 @@ agu->scale = vector3d(1,1,1);
     //slog("x: %f, y: %f, z: %f", player->rotation.x, player->rotation.y, player->rotation.z);
         //slog("height: %f", player->position.z);
 
+        //vector3d_copy(wireTest->rotation, player->rotation);
+
+        wireTest->scale.z = player->size.x;
+        //wireTest->scale.x = sin(player->rotation.z);
+
+        wireTest->rotation.z = player->rotation.z;
+
+
+        wireTest->position.x = player->position.x +200;
+        wireTest->position.y = player->position.y;
+        wireTest->position.z = player->position.z - player->size.x+10;
+
+
+
+
+
+        //wireTest->rotation.z += 0.1;
+        //vector3d_copy(wireTest->scale, player->rotation);
+        //vector3d_copy(wireTest->rotation, player->rotation);
+        //vector3d_copy(wireTest->position, player->position);
 
 
         if(mousex == screenWidth/2 && mousey == screenHeight/2)
