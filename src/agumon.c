@@ -38,8 +38,13 @@ void agumon_think(Entity *self)
 
     //gfc_matrix_identity(self->modelMat);
     //gfc_matrix_scale(self->modelMat, vector3d(100,100,100));
-    self->rotation.x += -0.2;
-    self->rotation.y += 0.05;
+    //self->rotation.x += -0.2;
+    //self->rotation.y += 0.05;
+    self->scale.x += 0.01;
+    self->rotation.z += 0.01;
+    //self->rotation.x += 0.01;
+    self->rotation.y += 0.01;
+
 }
 
 /*eol@eof*/

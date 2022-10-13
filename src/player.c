@@ -167,6 +167,7 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
     //if(keys[SDL_SCANCODE_SPACE])
     if(gfc_input_key_pressed(" "))
     {
+        self->velocity.z = 0;
         ApplyVelocity(self, vector3d(0,0, 5));
     }
 

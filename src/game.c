@@ -59,6 +59,7 @@ int main(int argc,char *argv[])
 
     //w = world_load("config/grassTest.json");
     Entity* agu = agumon_new(vector3d(1000,-1200,20));
+    agu->scale = vector3d(1,1,1);
 
    // gf3d_model_draw(agu->model, agu->modelMat);
 
@@ -86,12 +87,12 @@ int main(int argc,char *argv[])
 
     SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
 
-agu->scale = vector3d(10,10,10);
+    //agu->scale = vector3d(10,10,10);
 
 
     vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
-    vector3d_copy(wireTest->scale, vector3d(20,20,20));
-    wireTest->scale = vector3d(10,3,3);
+    vector3d_copy(wireTest->scale, vector3d(5,100,5));
+    //wireTest->scale = vector3d(15,3,3);
     //WULF
 
 
@@ -124,7 +125,15 @@ agu->scale = vector3d(10,10,10);
 
 
       //  wireTest->scale.x = 5
-    wireTest->rotation.z += 0.01;
+        //wireTest->rotation.z += 0.1;
+        vector3d_copy(wireTest->position, player->position);
+        vector3d_copy(wireTest->rotation, player->rotation);
+        //wireTest->position.x += sin(player->rotation.z) *120;
+        //wireTest->position.y += cos(player->rotation.z) *120;
+        wireTest->position.x += 200;
+        wireTest->position.y += 200;
+
+
 
         //wireTest->position.x += 100;
 
