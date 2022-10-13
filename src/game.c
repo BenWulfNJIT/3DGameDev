@@ -91,7 +91,7 @@ agu->scale = vector3d(10,10,10);
 
     vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
     vector3d_copy(wireTest->scale, vector3d(20,20,20));
-
+    wireTest->scale = vector3d(10,3,3);
     //WULF
 
 
@@ -110,18 +110,23 @@ agu->scale = vector3d(10,10,10);
 
         //vector3d_copy(wireTest->rotation, player->rotation);
 
+
+        /*
+         * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA
         wireTest->scale.z = player->size.x;
-        //wireTest->scale.x = sin(player->rotation.z);
-
         wireTest->rotation.z = player->rotation.z;
-
-
         wireTest->position.x = player->position.x +200;
         wireTest->position.y = player->position.y;
         wireTest->position.z = player->position.z - player->size.x+10;
+        */
+
+        //reset stuff first
 
 
+      //  wireTest->scale.x = 5
+    wireTest->rotation.z += 0.01;
 
+        //wireTest->position.x += 100;
 
 
         //wireTest->rotation.z += 0.1;
