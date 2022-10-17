@@ -134,6 +134,24 @@ void entity_update(Entity *self)
     if (self->update)self->update(self);
 }
 
+Entity* GetPlayer()
+{
+
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        //entity_update(&entity_manager.entity_list[i]);
+        if(entity_manager.entity_list[i].type == 0)
+        {
+            return &entity_manager.entity_list[i];
+        }
+    }
+}
+
 void entity_update_all()
 {
     int i;
@@ -155,7 +173,7 @@ void ApplyGravity()
         {
             continue;// skip this iteration of the loop
         }
-        else if(entity_manager.entity_list[i].type == 0)
+        else if(entity_manager.entity_list[i].type == 0 || entity_manager.entity_list[i].type == 1)
         {
             //slog("Apply gravity to player hopefully");
             ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));

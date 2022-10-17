@@ -31,12 +31,13 @@ Entity *player_new(Vector3D position)
     ent->update = player_update;
     vector3d_copy(ent->position,position);
 
-    vector3d_copy(ent->size, vector3d(30, 10, 10));
+    vector3d_copy(ent->size, vector3d(30, 12, 7));
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
     ent->currentSpeed = 0;
     ent->maxWalkSpeed = 2.5;
+    ent->maxRunSpeed = 4;
     return ent;
 }
 
@@ -116,7 +117,21 @@ SDL_PumpEvents();
         //self->position.y += moveY;
         //self->velocity.x += moveX;
         //self->velocity.y += moveY;
-        if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+        //if(keys[SDL_SCANCODE_LSHIFT])
+
+        if(keys[SDL_SCANCODE_LSHIFT])
+        {
+            if(self->currentSpeed <=self->maxRunSpeed) self->currentSpeed += 0.6;
+        }
+        else
+        {
+            if(self->currentSpeed > self->maxWalkSpeed) self->currentSpeed -= 0.6;
+            if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
+            if(self->currentSpeed > self->maxWalkSpeed) self->currentSpeed = self->maxWalkSpeed;
+
+        }
+
+
         ApplyVelocity(self, vector3d(moveX*self->currentSpeed, moveY*self->currentSpeed, 0));
         self->moveType = 1;
     }

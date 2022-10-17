@@ -20,6 +20,8 @@
 #include "physics.h"
 #include "wire_frame.h"
 
+#include "mushroom_black.h"
+
 extern int __DEBUG;
 
 int main(int argc,char *argv[])
@@ -58,8 +60,10 @@ int main(int argc,char *argv[])
     w = world_load("config/testworld.json");
 
     //w = world_load("config/grassTest.json");
-    Entity* agu = agumon_new(vector3d(1000,-1200,20));
-    agu->scale = vector3d(1,1,1);
+    Entity* agu = agumon_new(vector3d(4500,4500, 4000));
+    agu->scale = vector3d(250,250,250);
+    agu->rotation.z -= 0.7;
+    //agu->rotation.x = -2;
 
    // gf3d_model_draw(agu->model, agu->modelMat);
 
@@ -91,13 +95,16 @@ int main(int argc,char *argv[])
 
 
     vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
-    vector3d_copy(wireTest->scale, vector3d(5,100,5));
+    //vector3d_copy(wireTest->scale, vector3d(5,100,5));
+    vector3d_copy(wireTest->scale, vector3d(player->size.y, player->size.z, player->size.x));
     //wireTest->scale = vector3d(15,3,3);
     //WULF
 
+    //ENEMY SPAWNS
+    Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
 
     //wireTest->scale.x += 100;
-
+    int grow = 1; //1 for big 0 for mall
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
@@ -110,28 +117,34 @@ int main(int argc,char *argv[])
         //slog("height: %f", player->position.z);
 
         //vector3d_copy(wireTest->rotation, player->rotation);
+        agu->rotation.y += 0.1;
+        agu->rotation.z += 0.1;
+        if(agu->scale.x >= 250) grow = 0;
+        else if(agu->scale.x <= 0) grow = 1;
+
+        if(grow == 1)
+        {
+            vector3d_copy(agu->scale, vector3d(agu->scale.x++, agu->scale.y++, agu->scale.z++));
+        }
+        else if(grow == 0)
+        {
+            vector3d_copy(agu->scale, vector3d(agu->scale.x--, agu->scale.y--, agu->scale.z--));
+        }
 
 
         /*
          * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA
+         * MAKE THIS NOT ACTUALLY DRAW EVENTUALLY IDK
+         * */
         wireTest->scale.z = player->size.x;
         wireTest->rotation.z = player->rotation.z;
-        wireTest->position.x = player->position.x +200;
+        wireTest->position.x = player->position.x;
         wireTest->position.y = player->position.y;
-        wireTest->position.z = player->position.z - player->size.x+10;
-        */
+        wireTest->position.z = player->position.z - player->size.x/2;
+
+        /**/
 
         //reset stuff first
-
-
-      //  wireTest->scale.x = 5
-        //wireTest->rotation.z += 0.1;
-        vector3d_copy(wireTest->position, player->position);
-        vector3d_copy(wireTest->rotation, player->rotation);
-        //wireTest->position.x += sin(player->rotation.z) *120;
-        //wireTest->position.y += cos(player->rotation.z) *120;
-        wireTest->position.x += 200;
-        wireTest->position.y += 200;
 
 
 
