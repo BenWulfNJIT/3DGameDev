@@ -22,6 +22,9 @@ typedef struct Entity_S
 
 
     Vector3D    size; // x: height, y: width, z: depth;
+
+    Vector3D    initSize;
+    Vector3D    currentSize;
     //HitBox      hitbox;
     Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world, 4 for wireframes
     Uint8       moveType; //0 for standstill, 1 for walk, 2 for sprint, 3 for air
@@ -34,6 +37,8 @@ typedef struct Entity_S
     Uint8       state; //idle, searching, fighting, fleeing? idk
     int         jumpTimerMax;
     int         jumpTimer;
+
+
 
 
     Vector3D    position;  
@@ -111,6 +116,6 @@ void ApplyGravity();
 
 Entity* GetPlayer();
 
-
+Vector3D GetSize(Entity* ent);
 
 #endif

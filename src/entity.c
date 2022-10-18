@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "simple_logger.h"
-
+#include "gf3d_obj_load.h"
 #include "entity.h"
 #include "physics.h"
 
@@ -181,5 +181,64 @@ void ApplyGravity()
 
     }
 }
+
+
+Vector3D GetSize(Entity* ent)
+{
+    float minX, minY, minZ, maxX, maxY, maxZ;
+    minX = 999999999;
+    minY = 999999999;
+    minZ = 999999999;
+    maxX = -999999999;
+    maxY = -999999999;
+    maxZ = -999999999;
+
+    char* file = ent->model->filename;
+
+    ObjData *object = gf3d_obj_load_from_file(&file);
+
+    if(!object)
+    {
+        slog("Could not get object data for size");
+        return vector3d(0,0,0);
+    }
+
+    for(int i=0; i<object->vertex_count; i++)
+    {
+
+        if(object->vertices->x < minX) minX = object->vertices->x;
+        if(object->vertices->y < minY) minY = object->vertices->y;
+        if(object->vertices->z < minZ) minZ = object->vertices->z;
+
+        if(object->vertices->x > maxX) maxX = object->vertices->x;
+        if(object->vertices->y > maxY) maxY = object->vertices->y;
+        if(object->vertices->z > maxZ) maxZ = object->vertices->z;
+
+    }
+
+
+    return vector3d(maxX-minX, maxY-minY, maxZ-minZ);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*eol@eof*/

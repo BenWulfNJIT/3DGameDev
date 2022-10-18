@@ -31,7 +31,7 @@ Entity *player_new(Vector3D position)
     ent->update = player_update;
     vector3d_copy(ent->position,position);
 
-    vector3d_copy(ent->size, vector3d(30, 12, 7));
+    vector3d_copy(ent->size, vector3d(3, 12, 7));
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;

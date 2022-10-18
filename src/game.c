@@ -78,7 +78,7 @@ int main(int argc,char *argv[])
     player->cameraLock = 0;
 
     Entity* wireTest = wire_frame_line_new();
-    
+    Entity* wireTwo = wire_frame_line_new();
     //WULF
     int beginTime = 0;
     Uint8 snapCamera = 0;
@@ -102,6 +102,7 @@ int main(int argc,char *argv[])
 
     //ENEMY SPAWNS
     Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
+    Vector3D Test = GetSize(agu);
 
     //wireTest->scale.x += 100;
     int grow = 1; //1 for big 0 for mall
@@ -131,6 +132,7 @@ int main(int argc,char *argv[])
             vector3d_copy(agu->scale, vector3d(agu->scale.x--, agu->scale.y--, agu->scale.z--));
         }
 
+        Test = GetSize(agu);
 
         /*
          * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA
@@ -138,14 +140,18 @@ int main(int argc,char *argv[])
          * */
         wireTest->scale.z = player->size.x;
         wireTest->rotation.z = player->rotation.z;
-        wireTest->position.x = player->position.x;
+        wireTest->position.x = player->position.x+100;
         wireTest->position.y = player->position.y;
         wireTest->position.z = player->position.z - player->size.x/2;
 
         /**/
+        wireTwo->position.x = player->position.x + 100 + (player->size.y/2);
+        wireTwo->position.y = player->position.y + (player->size.z + 5);
+        wireTwo->position.z = player->size.x/2 + player->position.z;
 
         //reset stuff first
 
+        Vector3D Test = GetSize(agu);
 
 
         //wireTest->position.x += 100;
@@ -188,11 +194,9 @@ int main(int argc,char *argv[])
         //physics and collision here?
         ApplyGravity();
 
-
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
         gf3d_vgraphics_render_start();
-
             //3D draws
                 world_draw(w);
                 entity_draw_all();
