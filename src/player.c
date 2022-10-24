@@ -31,7 +31,10 @@ Entity *player_new(Vector3D position)
     ent->update = player_update;
     vector3d_copy(ent->position,position);
 
-    vector3d_copy(ent->size, vector3d(3, 12, 7));
+    //vector3d_copy(ent->size, vector3d(50, 12, 7));
+    ent->height = 40;
+    ent->width = 10;
+    ent->depth = 10;
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
@@ -56,8 +59,9 @@ void player_think(Entity *self)
 SDL_PumpEvents();
 
     //if( self->rotation.x >= 6.
-    if(self->rotation.z >= 6.283) self->rotation.z = 0;
-    else if(self->rotation.z <=0) self->rotation.z =6.283;
+    //if(self->rotation.z >= 6.283) self->rotation.z = 0;
+    //else if(self->rotation.z <=0) self->rotation.z =6.283;
+
 
 
     //if(self->rotation.z<= 0

@@ -19,7 +19,7 @@ Entity *agumon_new(Vector3D position)
     }
     
     ent->model = gf3d_model_load("dino");
-
+    //ent->model->filename = "dino";
 
     //gfc_matrix_identity(ent->modelMat);
     //gfc_matrix_scale(ent->modelMat, vector3d(100,100,100));

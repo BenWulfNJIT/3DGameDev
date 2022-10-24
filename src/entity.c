@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
+#include "gfc_text.h"
 
 #include "simple_logger.h"
 #include "gf3d_obj_load.h"
+#include "gf3d_model.h"
 #include "entity.h"
 #include "physics.h"
 
@@ -121,6 +123,9 @@ void entity_update(Entity *self)
 
         gfc_matrix_scale(self->modelMat,self->scale);
         gfc_matrix_rotate_by_vector(self->modelMat, self->modelMat, self->rotation);
+    if(self->rotation.z >= 6.283) self->rotation.z = 0;
+    else if(self->rotation.z <=0) self->rotation.z =6.283;
+
         gfc_matrix_translate(self->modelMat,self->position);
 
     /* old matrix rotate
@@ -183,9 +188,14 @@ void ApplyGravity()
 }
 
 
-Vector3D GetSize(Entity* ent)
+Vector3D GetOrigModelSize(char* filePath)
 {
-    float minX, minY, minZ, maxX, maxY, maxZ;
+    float minX, minY, minZ, maxX, maxY, maxZ;    //if(!object)
+    //{
+        //slog("Could not get object data for size");
+     //   return vector3d(0,0,0);
+    //}
+
     minX = 999999999;
     minY = 999999999;
     minZ = 999999999;
@@ -193,42 +203,96 @@ Vector3D GetSize(Entity* ent)
     maxY = -999999999;
     maxZ = -999999999;
 
-    char* file = ent->model->filename;
-
-    ObjData *object = gf3d_obj_load_from_file(&file);
+    ObjData *object = gf3d_obj_load_from_file(filePath);
 
     if(!object)
     {
-        slog("Could not get object data for size");
+        slog("failed to get object");
         return vector3d(0,0,0);
     }
+
 
     for(int i=0; i<object->vertex_count; i++)
     {
 
-        if(object->vertices->x < minX) minX = object->vertices->x;
-        if(object->vertices->y < minY) minY = object->vertices->y;
-        if(object->vertices->z < minZ) minZ = object->vertices->z;
+        if(object->vertices[i].x < minX) minX = object->vertices[i].x;
+        if(object->vertices[i].y < minY) minY = object->vertices[i].y;
+        if(object->vertices[i].z < minZ) minZ = object->vertices[i].z;
 
-        if(object->vertices->x > maxX) maxX = object->vertices->x;
-        if(object->vertices->y > maxY) maxY = object->vertices->y;
-        if(object->vertices->z > maxZ) maxZ = object->vertices->z;
+        if(object->vertices[i].x > maxX) maxX = object->vertices[i].x;
+        if(object->vertices[i].y > maxY) maxY = object->vertices[i].y;
+        if(object->vertices[i].z > maxZ) maxZ = object->vertices[i].z;
+
+        //slog("idk %f", (object->vertices[i].x));
 
     }
 
+    slog("Width: %f",(maxX - minX));
+    //gf3d_model_free(model);
+
+    gf3d_obj_free(object);
 
     return vector3d(maxX-minX, maxY-minY, maxZ-minZ);
 
 
 }
 
+void BillboardSnapToPlayer(Entity* ent)
+{
+}
+void BillboardRotateToPlayer(Entity* ent, float speed)
+{
+    float angleToPlayer = GetAngleToPlayer(ent);
+
+    float dist = ent->rotation.z - angleToPlayer;
+
+    //slog("uhm %f", dist);
+    if(dist< speed && dist > -speed) return;
+
+    if(dist > 3.14) ent->rotation.z += speed;
+    if(dist> 0 && dist < 3.14) ent->rotation.z -= speed;
+    if(dist < 0 && dist> -3.14) ent->rotation.z += speed;
+    if(dist < -3.14) ent->rotation.z -= speed;
 
 
+}
 
+float GetAngleToPlayer(Entity* ent)
+{
+    Entity* player = GetPlayer();
 
+    float angle;
 
+    if(player->position.x > ent->position.x && player->position.y > ent->position.y)
+    {
+        //first quadrant
+        angle =  atan( (( player->position.y - ent->position.y ) / ( player->position.x - ent->position.x )) ) ;
+        return angle + 1.57;
+    }
+    else if(player->position.x < ent->position.x && player->position.y > ent->position.y)
+    {
+        //second quadrant
+        angle =  atan( (( player->position.y - ent->position.y ) / ( player->position.x - ent->position.x )) ) ;
+        return angle +4.71;
+    }
+    else if(player->position.x < ent->position.x && player->position.y < ent->position.y)
+    {
+        //third quadrant
+        angle =  atan( (( player->position.y - ent->position.y ) / ( player->position.x - ent->position.x )) ) ;
+        return angle +4.71;
+    }
+    else if(player->position.x > ent->position.x && player->position.y < ent->position.y)
+    {
+        //third quadrant
+        angle =  atan( (( player->position.y - ent->position.y ) / ( player->position.x - ent->position.x )) ) ;
+        return angle +1.57;
+    }
+    else
+    {
+        return 0;
+    }
 
-
+}
 
 
 

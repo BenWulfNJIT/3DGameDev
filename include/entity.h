@@ -23,6 +23,12 @@ typedef struct Entity_S
 
     Vector3D    size; // x: height, y: width, z: depth;
 
+    //new size system?
+    float       height;
+    float       width;
+    float       depth;
+
+
     Vector3D    initSize;
     Vector3D    currentSize;
     //HitBox      hitbox;
@@ -112,10 +118,35 @@ void entity_think_all();
  */
 void entity_update_all();
 
+/**
+ * @brief perform gravity to all monsters & player
+ */
 void ApplyGravity();
 
 Entity* GetPlayer();
 
-Vector3D GetSize(Entity* ent);
+/**
+ * @brief get the original height width and depth of a model before scaling
+ */
+Vector3D GetOrigModelSize(char* filePath);
+
+/**
+ * @brief sets entity rotation to face player instantly
+ */
+void BillboardSnapToPlayer(Entity* ent);
+
+
+
+/**
+ * @brief sets entity rotation to face player at desired speed
+ */
+void BillboardRotateToPlayer(Entity* ent, float speed);
+
+
+/**
+ * @brief get angle towards player
+ * @returns angle entity needs to face to be facing player
+ */
+float GetAngleToPlayer(Entity* ent);
 
 #endif

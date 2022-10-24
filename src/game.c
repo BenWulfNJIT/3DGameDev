@@ -102,14 +102,17 @@ int main(int argc,char *argv[])
 
     //ENEMY SPAWNS
     Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
-    Vector3D Test = GetSize(agu);
-
+    //Vector3D Test = GetSize(agu);
+    //Test = GetOrigModelSize(agu);
     //wireTest->scale.x += 100;
     int grow = 1; //1 for big 0 for mall
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
     {
+    //slog("orig width?: %f", Test.x);
+    //slog("current width?: %f", (Test.x * agu->scale.x));
+    //slog("currentWidth: %f", Test.x*agu->scale.x);
 
 
         //WULF
@@ -132,7 +135,7 @@ int main(int argc,char *argv[])
             vector3d_copy(agu->scale, vector3d(agu->scale.x--, agu->scale.y--, agu->scale.z--));
         }
 
-        Test = GetSize(agu);
+
 
         /*
          * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA
@@ -151,7 +154,7 @@ int main(int argc,char *argv[])
 
         //reset stuff first
 
-        Vector3D Test = GetSize(agu);
+        //Vector3D Test = GetSize(agu);
 
 
         //wireTest->position.x += 100;

@@ -20,7 +20,7 @@ void ApplyVelocity(Entity* ent, Vector3D velocity)
         }
     }
 
-    if(ent->position.z >= ent->size.x)
+    if(ent->position.z >= ent->height/2) //also assuming world is at z=0
     {
     ent->velocity.x += velocity.x;
     ent->velocity.y += velocity.y;
@@ -31,9 +31,9 @@ void ApplyVelocity(Entity* ent, Vector3D velocity)
     ent->position.y += velocity.y;
     ent->position.z += velocity.z;
     }
-    if(ent->position.z <= ent->size.x) //VERY BAD WORLD COLLISION BUT IT WORKS FOR NOW
+    if(ent->position.z < ent->height/2) //VERY BAD WORLD COLLISION BUT IT WORKS FOR NOW p.s. this assumes world is at z=0
     {
-        ent->position.z = ent->size.x;
+        ent->position.z = ent->height/2;
         ent->velocity.z = 0;
     }
 

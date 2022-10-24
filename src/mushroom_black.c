@@ -17,13 +17,23 @@ Entity* mushroom_black_new(Vector3D position)
         return NULL;
     }
 
-    ent->model = gf3d_model_load("mushroom_black"); //change to mushroom
+    ent->model = gf3d_model_load("mushroom_black"); //change to mushroom //mushroom_black
 
-    ent->size.x = 8; //height
-    ent->size.y = 16; //width
-    ent->size.z = 16; //depth
 
-    vector3d_copy(ent->scale, vector3d(ent->size.y, ent->size.z, ent->size.x));
+    ent->height = 10;
+    ent->width = 16;
+    ent->depth = 16;
+    ent->initSize = GetOrigModelSize("models/mushroom_black.obj");
+    //ent->size.x = 8; //height
+    //ent->size.y = 16; //width
+    //ent->size.z = 16; //depth
+
+
+    //scale.x = width.x/orig model
+
+    vector3d_copy(ent->scale, vector3d(ent->width/ent->initSize.x, ent->depth/ent->initSize.y, ent->height/ent->initSize.z));
+
+
 
     ent->think = mushroom_black_think;
     ent->type = 1; //monster
@@ -50,26 +60,28 @@ void mushroom_black_think(Entity* self)
 
     if(player)
     {
-        slog("success??");
-        slog("aaa %i", player->type);
+        //slog("success??");
+        //slog("aaa %i", player->type);
     }
     //do think stuff
     //need to set a timer for this but
-    if(self->position.z <= self->size.x)
+
+    //slog("height: %f", self->height);
+    //slog("orig size: %f", self->initSize.z);
+    //slog("scale %f", self->scale.z);
+   // slog("pos.z %f", self->position.z);
+
+    if(self->position.z <= self->height/2)
     {
         //TODO: set radius check so it only does stuff in range, ya know.
-        //float test = player->position.x;
-        //slog("AAAA %f", player->position.x);
+
         self->velocity.x = 0;
         self->velocity.y = 0;
         self->velocity.z = 0;
 
 
-        float angle = atan((player->position.y - self->position.y)/(player->position.x - self->position.x));
 
-       self->rotation.z = angle;
-
-       slog("uh %f", self->rotation.z);
+        BillboardRotateToPlayer(self, 0.05);
 
 
         self->jumpTimer++;
@@ -82,7 +94,6 @@ void mushroom_black_think(Entity* self)
         jumpDir.z = 2;
 
 
-        //ApplyVelocity(self,vector3d(self->position.x - player->position.x, self->position.y - player->position.y, 3));
         ApplyVelocity(self, jumpDir);
 
         self->jumpTimer = 0;
