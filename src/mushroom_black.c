@@ -2,6 +2,7 @@
 #include "simple_logger.h"
 #include "entity.h"
 #include "player.h"
+#include "collision.h"
 
 void mushroom_black_think(Entity* self);
 
@@ -70,6 +71,26 @@ void mushroom_black_think(Entity* self)
     //slog("orig size: %f", self->initSize.z);
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
+
+   Uint8 colliding = BadCollisionCheck(self, player);
+   if(colliding == 1)
+   {
+       slog("COLLIDING");
+
+       Vector3D jumpDir = vector3d(player->position.x - self->position.x *-1, player->position.y - self->position.y*-1, 1);
+        vector3d_normalize(&jumpDir);
+        jumpDir.x = jumpDir.x * 1.5;
+        jumpDir.y = jumpDir.y * 1.5;
+        jumpDir.z = 2;
+
+
+        ApplyVelocity(self, jumpDir);
+
+   }
+   else
+   {
+       slog("NOT COLLIDING");
+   }
 
     if(self->position.z <= self->height/2)
     {

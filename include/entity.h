@@ -5,6 +5,8 @@
 
 #include "gf3d_model.h"
 
+#include "collision.h"
+
 
 typedef struct Entity_S
 {
