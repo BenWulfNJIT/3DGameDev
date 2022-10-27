@@ -41,6 +41,9 @@ Entity *player_new(Vector3D position)
     ent->currentSpeed = 0;
     ent->maxWalkSpeed = 2.5;
     ent->maxRunSpeed = 4;
+    ent->iFrame = 0;
+    ent->iFrameTime = 0;
+    ent->iFrameMax = 32; // i think 16 = 1 second?
     return ent;
 }
 

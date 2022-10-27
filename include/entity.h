@@ -1,6 +1,5 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
-
 #include "gfc_types.h"
 
 #include "gf3d_model.h"
@@ -30,6 +29,11 @@ typedef struct Entity_S
     float       width;
     float       depth;
 
+    float       iFrame; //0 for false (can be damaged) 1 for true (invincible)
+    int         iFrameMax;
+    int         iFrameTime;
+    Uint8       attacking; //0 for not attacking, 1 for attacking
+    float       attackRange;
 
     Vector3D    initSize;
     Vector3D    currentSize;

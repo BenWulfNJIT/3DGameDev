@@ -77,8 +77,8 @@ int main(int argc,char *argv[])
 
     player->cameraLock = 0;
 
-    Entity* wireTest = wire_frame_line_new();
-    Entity* wireTwo = wire_frame_line_new();
+    //Entity* wireTest = wire_frame_line_new();
+    //Entity* wireTwo = wire_frame_line_new();
     //WULF
     int beginTime = 0;
     Uint8 snapCamera = 0;
@@ -94,9 +94,9 @@ int main(int argc,char *argv[])
     //agu->scale = vector3d(10,10,10);
 
 
-    vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
+    //vector3d_copy(wireTest->position, vector3d(1400, -1400, 20));
     //vector3d_copy(wireTest->scale, vector3d(5,100,5));
-    vector3d_copy(wireTest->scale, vector3d(player->size.y, player->size.z, player->size.x));
+    //vector3d_copy(wireTest->scale, vector3d(player->size.y, player->size.z, player->size.x));
     //wireTest->scale = vector3d(15,3,3);
     //WULF
 
@@ -140,18 +140,19 @@ int main(int argc,char *argv[])
         /*
          * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA
          * MAKE THIS NOT ACTUALLY DRAW EVENTUALLY IDK
-         * */
+         *
+
         wireTest->scale.z = player->size.x;
         wireTest->rotation.z = player->rotation.z;
         wireTest->position.x = player->position.x+100;
         wireTest->position.y = player->position.y;
         wireTest->position.z = player->position.z - player->size.x/2;
 
-        /**/
+
         wireTwo->position.x = player->position.x + 100 + (player->size.y/2);
         wireTwo->position.y = player->position.y + (player->size.z + 5);
         wireTwo->position.z = player->size.x/2 + player->position.z;
-
+*/
         //reset stuff first
 
         //Vector3D Test = GetSize(agu);

@@ -1,3 +1,4 @@
+#include <math.h>
 #include "mushroom_black.h"
 #include "simple_logger.h"
 #include "entity.h"
@@ -46,7 +47,8 @@ Entity* mushroom_black_new(Vector3D position)
 
     ent->jumpTimer = 0;
     ent->jumpTimerMax = 100;
-
+    ent->attacking = 0;
+    ent->attackRange = 150;
 
     vector3d_copy(ent->position,position);
     return ent;
@@ -72,24 +74,31 @@ void mushroom_black_think(Entity* self)
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
 
+
+
    Uint8 colliding = BadCollisionCheck(self, player);
-   if(colliding == 1)
+   if(colliding == 1 && self->attacking ==1)
    {
-       slog("COLLIDING");
+       //slog("COLLIDING");
+       player->iFrame = 1;
 
-       Vector3D jumpDir = vector3d(player->position.x - self->position.x *-1, player->position.y - self->position.y*-1, 1);
-        vector3d_normalize(&jumpDir);
-        jumpDir.x = jumpDir.x * 1.5;
-        jumpDir.y = jumpDir.y * 1.5;
-        jumpDir.z = 2;
+       if(self->attacking == 1)
+       {
+            vector3d_copy(self->velocity, vector3d(0,0,0));
+            Vector3D jumpDir = vector3d(self->position.x - player->position.x, self->position.y - player->position.y, 1);
+            vector3d_normalize(&jumpDir);
+            jumpDir.x = jumpDir.x * 1.5;
+            jumpDir.y = jumpDir.y * 1.5;
+            jumpDir.z = 2;
 
 
-        ApplyVelocity(self, jumpDir);
+            ApplyVelocity(self, jumpDir);
+       }
 
    }
    else
    {
-       slog("NOT COLLIDING");
+       //slog("NOT COLLIDING");
    }
 
     if(self->position.z <= self->height/2)
@@ -100,26 +109,48 @@ void mushroom_black_think(Entity* self)
         self->velocity.y = 0;
         self->velocity.z = 0;
 
-
+        self->attacking = 0;
 
         BillboardRotateToPlayer(self, 0.05);
 
 
         self->jumpTimer++;
+
+
         if(self->jumpTimer >= self->jumpTimerMax)
         {
         Vector3D jumpDir = vector3d(player->position.x - self->position.x , player->position.y - self->position.y, 1);
         vector3d_normalize(&jumpDir);
-        jumpDir.x = jumpDir.x * 1.5;
-        jumpDir.y = jumpDir.y * 1.5;
-        jumpDir.z = 2;
+
+         float distS = ((player->position.x-self->position.x)*(player->position.x-self->position.x)) +  ((player->position.y-self->position.y)*(player->position.y-self->position.y));
+
+        if(distS < 0) distS = distS * -1;
+
+        distS = sqrt((int)distS);
+
+                slog("distanceS: %f", distS);
+
+        if(distS > self->attackRange)
+        {
+            jumpDir.x = jumpDir.x * 1.5;
+            jumpDir.y = jumpDir.y * 1.5;
+            jumpDir.z = 2;
+        }
+        else
+        {
+            jumpDir.x = jumpDir.x * 5;
+            jumpDir.y = jumpDir.y * 5;
+            jumpDir.z = 2;
+        }
 
 
         ApplyVelocity(self, jumpDir);
-
+        self->attacking = 1;
         self->jumpTimer = 0;
         }
     }
+
+
 
 }
 
