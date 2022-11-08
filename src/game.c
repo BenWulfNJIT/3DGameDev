@@ -21,6 +21,12 @@
 #include "wire_frame.h"
 
 #include "mushroom_black.h"
+#include "mushroom_blue.h"
+#include "mushroom_green.h"
+#include "mushroom_red.h"
+#include "mushroom_green_small.h"
+#include "mushroom_bfm.h"
+
 
 extern int __DEBUG;
 
@@ -30,6 +36,7 @@ int main(int argc,char *argv[])
     int a;
     
     Sprite *mouse = NULL;
+    Sprite *healthBar = NULL;
     int mousex,mousey;
 
     //SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
@@ -54,8 +61,10 @@ int main(int argc,char *argv[])
     slog_sync();
     
     entity_system_init(1024);
+
     
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
+    healthBar = gf3d_sprite_load("images/healthBar.png",256,256,1);
     
     w = world_load("config/testworld.json");
 
@@ -102,6 +111,13 @@ int main(int argc,char *argv[])
 
     //ENEMY SPAWNS
     Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
+    //Entity* redMush = mushroom_red_new(vector3d(1000,-1000,30));
+    //Entity* greenMush = mushroom_green_new(vector3d(900,-900,30));
+    //Entity* blueMush = mushroom_blue_new(vector3d(800,-800,30));
+    //Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
+    //Entity* bfmMush = mushroom_bfm_new(vector3d(600,-600,30));
+
+
     //Vector3D Test = GetSize(agu);
     //Test = GetOrigModelSize(agu);
     //wireTest->scale.x += 100;
@@ -205,10 +221,24 @@ int main(int argc,char *argv[])
                 world_draw(w);
                 entity_draw_all();
             //2D draws
-                if(player->cameraLock)
+
+                if(!player->cameraLock)//DO GAME UI STUFF
+                {
+
+                }
+                if(player->cameraLock)//DO MENU UI STUFF
                 {
                     gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
+
                 }
+
+                //ATTEMPT UI HERE
+
+                    //gf2d_sprite_draw(healthBar, vector2d(500,500),vector2d(5,0.1),vector3d(0,0,0),gfc_color(1,1,1,0.1),1);
+
+
+
+
 
                 gf3d_vgraphics_render_end();
 

@@ -35,6 +35,7 @@ Entity *player_new(Vector3D position)
     ent->height = 40;
     ent->width = 10;
     ent->depth = 10;
+    ent->health = 5;
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
