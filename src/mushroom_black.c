@@ -27,6 +27,8 @@ Entity* mushroom_black_new(Vector3D position)
     ent->width = 16;
     ent->depth = 16;
     ent->health = 100;
+    ent->damageBuffer = 0;
+    ent->damageBufferCount = 60;
     ent->initSize = GetOrigModelSize("models/mushroom_black.obj");
     //ent->size.x = 8; //height
     //ent->size.y = 16; //width
@@ -62,11 +64,16 @@ void mushroom_black_think(Entity* self)
     if (!self)return;
 
     Entity* player = GetPlayer();
-
-    if(player)
+slog("health: %f", self->health);
+slog("damagebuff: %i", self->damageBuffer);
+if(player)
     {
         //slog("success??");
         //slog("aaa %i", player->type);
+    }
+    if(self->health == 0)//DO DEATH STUFF
+    {
+        entity_free(self);
     }
     //do think stuff
     //need to set a timer for this but
@@ -76,7 +83,7 @@ void mushroom_black_think(Entity* self)
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
 
-
+    if(self->damageBuffer > 0) self->damageBuffer--;
 
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)

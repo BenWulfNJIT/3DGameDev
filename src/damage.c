@@ -7,6 +7,24 @@ void DoDamage(Entity* attacker, Entity* receiver, int damage)
     if(attacker->type == 0) //PLAYER ATTACKER INTERACTIONS
     {
 
+
+        if(receiver->type ==1)//PLAYER ATTACKIGN MONSTER
+        {
+
+            if(receiver->damageBuffer > 0) return;
+
+            receiver->health -= damage;
+            //slog("HELELLEOEOEOELEOLE???");
+            receiver->damageBuffer = receiver->damageBufferCount;
+            if(receiver->health < 0) // mob died
+            {
+                receiver->health = 0;
+                //entity_free(receiver);
+                return;
+            }
+
+
+        }
     }
 
     if(attacker->type == 1) //MONSTER SPECIFIC ATTACKS

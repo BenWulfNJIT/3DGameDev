@@ -38,7 +38,8 @@ typedef struct Entity_S
     Vector3D    initSize;
     Vector3D    currentSize;
     //HitBox      hitbox;
-    Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world, 4 for wireframes
+    Uint8       type; //0 for player, 1 for monster, 2 for item, 3 for world, 4 for projectiles
+    Uint8       team; //1 for player, 2 for monster
     Uint8       moveType; //0 for standstill, 1 for walk, 2 for sprint, 3 for air
 
     float       maxRunSpeed;
@@ -58,7 +59,8 @@ typedef struct Entity_S
     Vector3D    velocity;
     Vector3D    acceleration;
     
-    
+    int         ttl; //time to live for projectiles
+
     Vector3D    scale;
     Vector3D    rotation;
     
@@ -158,5 +160,9 @@ void BillboardRotateToPlayer(Entity* ent, float speed);
  * @returns angle entity needs to face to be facing player
  */
 float GetAngleToPlayer(Entity* ent);
+
+Entity* GetNearestEnemy(Entity* ent);
+
+
 
 #endif

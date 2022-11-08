@@ -72,9 +72,9 @@ int main(int argc,char *argv[])
     w = world_load("config/testworld.json");
 
     //w = world_load("config/grassTest.json");
-    Entity* agu = agumon_new(vector3d(4500,4500, 4000));
-    agu->scale = vector3d(250,250,250);
-    agu->rotation.z -= 0.7;
+    //Entity* agu = agumon_new(vector3d(4500,4500, 4000));
+    //agu->scale = vector3d(250,250,250);
+    //agu->rotation.z -= 0.7;
     //agu->rotation.x = -2;
 
    // gf3d_model_draw(agu->model, agu->modelMat);
@@ -114,11 +114,11 @@ int main(int argc,char *argv[])
 
     //ENEMY SPAWNS
     Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
-    //Entity* redMush = mushroom_red_new(vector3d(1000,-1000,30));
-    //Entity* greenMush = mushroom_green_new(vector3d(900,-900,30));
-    //Entity* blueMush = mushroom_blue_new(vector3d(800,-800,30));
-    //Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
-    //Entity* bfmMush = mushroom_bfm_new(vector3d(600,-600,30));
+    Entity* redMush = mushroom_red_new(vector3d(1000,-1000,30));
+    Entity* greenMush = mushroom_green_new(vector3d(900,-900,30));
+    Entity* blueMush = mushroom_blue_new(vector3d(800,-800,30));
+    Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
+    Entity* bfmMush = mushroom_bfm_new(vector3d(600,-600,30));
 
 
     //Vector3D Test = GetSize(agu);
@@ -142,6 +142,7 @@ int main(int argc,char *argv[])
         //slog("height: %f", player->position.z);
 
         //vector3d_copy(wireTest->rotation, player->rotation);
+        /*
         agu->rotation.y += 0.1;
         agu->rotation.z += 0.1;
         if(agu->scale.x >= 250) grow = 0;
@@ -156,7 +157,7 @@ int main(int argc,char *argv[])
             vector3d_copy(agu->scale, vector3d(agu->scale.x--, agu->scale.y--, agu->scale.z--));
         }
 
-
+*/
 
         /*
          * GOOD HITBOX STUFF, OFFSET FROM CHAR KINDA

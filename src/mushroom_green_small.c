@@ -44,7 +44,9 @@ Entity* mushroom_green_small_new(Vector3D position)
     /*
      * add any other monster specific stats
     */
-
+    ent->health = 100;
+    ent->damageBuffer = 0;
+    ent->damageBufferCount = 60;
     ent->jumpTimer = 0;
     ent->jumpTimerMax = 100;
     ent->attacking = 0;

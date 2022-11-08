@@ -30,7 +30,9 @@ Entity* mushroom_bfm_new(Vector3D position)
     //ent->size.y = 16; //width
     //ent->size.z = 16; //depth
 
-
+    ent->health = 100;
+    ent->damageBuffer = 0;
+    ent->damageBufferCount = 60;
     //scale.x = width.x/orig model
 
     vector3d_copy(ent->scale, vector3d(ent->width/ent->initSize.x, ent->depth/ent->initSize.y, ent->height/ent->initSize.z));

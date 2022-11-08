@@ -183,6 +183,12 @@ void ApplyGravity()
             //slog("Apply gravity to player hopefully");
             ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
         }
+        else if(entity_manager.entity_list[i].type == 4)
+        {
+
+            ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.05));
+
+        }
 
     }
 }
@@ -256,6 +262,44 @@ void BillboardRotateToPlayer(Entity* ent, float speed)
 
 
 }
+
+Entity* GetNearestEnemy(Entity* ent)
+{
+    float tempDistSquared;
+    float distanceSquared = 999999999999999;
+    Entity* closestEnemy = NULL;
+    for(int i=0; i<entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        else if(entity_manager.entity_list[i].type == 1)
+        {
+            //slog("1");
+            tempDistSquared =  ((entity_manager.entity_list[i].position.x-ent->position.x)*(entity_manager.entity_list[i].position.x-ent->position.x)) + ((entity_manager.entity_list[i].position.y-ent->position.y)*(entity_manager.entity_list[i].position.y-ent->position.y)) + ((entity_manager.entity_list[i].position.z-ent->position.z)*(entity_manager.entity_list[i].position.z-ent->position.z));
+                //        slog("2");
+
+            if(tempDistSquared < distanceSquared )
+            {
+              //              slog("3");
+
+                distanceSquared = tempDistSquared;
+                closestEnemy = &entity_manager.entity_list[i];
+            //slog("4");
+            //slog("huh %f",closestEnemy->position.x);
+            }
+            //slog("Apply gravity to player hopefully");
+            //ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
+
+        }
+
+
+    }
+    //slog("ok %f",closestEnemy->position.z);
+    return closestEnemy;
+}
+
 
 float GetAngleToPlayer(Entity* ent)
 {

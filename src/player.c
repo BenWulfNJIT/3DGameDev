@@ -7,7 +7,8 @@
 #include "collision.h"
 #include "player.h"
 #include "gf3d_sprite.h"
-
+#include "projectile.h"
+#include "gfc_vector.h"
 
 void player_think(Entity *self);
 void player_update(Entity *self);
@@ -206,24 +207,62 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
 
     if(gfc_input_key_pressed("1"))
     {
+        self->currentWeapon = 1;
         self->weaponSprite = gf3d_sprite_load("images/sword.png", 128,256, 1);
     }
     if(gfc_input_key_pressed("2"))
     {
+        self->currentWeapon = 2;
         self->weaponSprite = gf3d_sprite_load("images/bow.png", 128,256, 1);
     }
     if(gfc_input_key_pressed("3"))
     {
+        self->currentWeapon = 3;
         self->weaponSprite = gf3d_sprite_load("images/staff.png", 128,256, 1);
     }
     if(gfc_input_key_pressed("4"))
     {
+        self->currentWeapon = 4;
         self->weaponSprite = gf3d_sprite_load("images/hammer.png", 128,256, 1);
     }
     if(gfc_input_key_pressed("5"))
     {
+        self->currentWeapon = 5;
         self->weaponSprite = gf3d_sprite_load("images/fist.png", 128,256, 1);
     }
+
+
+    if(self->cameraLock == 0 && gfc_input_key_pressed("e"))
+    {
+        switch(self->currentWeapon)
+        {
+            case 1:
+                break;
+            case 2:
+                Vector3D direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x * 20;
+                direction.y = direction.y * 20;
+                direction.z = direction.z * 20;
+
+                //Vector3D startPos = vector3d(self->position.x, self->position.y, self->position.z/2);
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction);
+
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+
+        }
+    }
+
+
+
+
 
     //WEAPON ZONE
 
