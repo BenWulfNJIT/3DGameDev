@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "player.h"
 #include "collision.h"
+#include "damage.h"
 
 void mushroom_black_think(Entity* self);
 
@@ -25,6 +26,7 @@ Entity* mushroom_black_new(Vector3D position)
     ent->height = 10;
     ent->width = 16;
     ent->depth = 16;
+    ent->health = 100;
     ent->initSize = GetOrigModelSize("models/mushroom_black.obj");
     //ent->size.x = 8; //height
     //ent->size.y = 16; //width
@@ -91,7 +93,7 @@ void mushroom_black_think(Entity* self)
             jumpDir.y = jumpDir.y * 1.5;
             jumpDir.z = 2;
 
-
+            DoDamage(self, player, 10);
             ApplyVelocity(self, jumpDir);
        }
 

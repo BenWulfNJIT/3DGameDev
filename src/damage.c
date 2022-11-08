@@ -1,4 +1,5 @@
 #include "damage.h"
+#include "simple_logger.h"
 
 void DoDamage(Entity* attacker, Entity* receiver, int damage)
 {
@@ -15,13 +16,18 @@ void DoDamage(Entity* attacker, Entity* receiver, int damage)
         if(receiver->type == 0) //monster attacking player
         {
 
-            receiver->health -= damage;
 
+            if(receiver->damageBuffer > 0) return;
+
+            receiver->health -= damage;
+            receiver->damageBuffer = receiver->damageBufferCount;
             if(receiver->health < 0) //player died lol
             {
                 receiver->health = 0;
                 return;
             }
+                        slog("HEALTH: %f", receiver->health);
+
 
         }
 

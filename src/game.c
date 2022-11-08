@@ -37,15 +37,15 @@ int main(int argc,char *argv[])
     
     Sprite *mouse = NULL;
     Sprite *healthBar = NULL;
+    Sprite *crosshair = NULL;
     int mousex,mousey;
-
+    float healthWidth, healthHeight;
     //SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
     float mouseFrame = 0;
     World *w;
     Entity* player = NULL;
 
 
-    
     for (a = 1; a < argc;a++)
     {
         if (strcmp(argv[a],"--debug") == 0)
@@ -62,10 +62,13 @@ int main(int argc,char *argv[])
     
     entity_system_init(1024);
 
+
+
+
     
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
-    healthBar = gf3d_sprite_load("images/healthBar.png",256,256,1);
-    
+    healthBar = gf3d_sprite_load("images/healthBar.png", 1000, 40, 1);
+    crosshair = gf3d_sprite_load("images/crosshair.png", 32,32,1);
     w = world_load("config/testworld.json");
 
     //w = world_load("config/grassTest.json");
@@ -123,6 +126,8 @@ int main(int argc,char *argv[])
     //wireTest->scale.x += 100;
     int grow = 1; //1 for big 0 for mall
     // main game loop
+
+    int bigTestAAA= 0;
     slog("gf3d main loop begin");
     while(!done)
     {
@@ -222,8 +227,16 @@ int main(int argc,char *argv[])
                 entity_draw_all();
             //2D draws
 
-                if(!player->cameraLock)//DO GAME UI STUFF
+
+            //player->health--;
+
+                if(player->cameraLock == 0)//DO GAME UI STUFF
                 {
+
+                    //HEALTH DRAW
+                    gf3d_sprite_draw(player->weaponSprite, vector2d(screenWidth-128, screenHeight-256), vector2d(1,1), 1);
+                    gf3d_sprite_draw(healthBar, vector2d( (-(500-((player->health/player->maxHealth)*500)))    , screenHeight-100), vector2d(1,1), 1);
+                    gf3d_sprite_draw(crosshair, vector2d(screenWidth/2-16, screenHeight/2-16), vector2d(1,1), 1);
 
                 }
                 if(player->cameraLock)//DO MENU UI STUFF
@@ -234,7 +247,6 @@ int main(int argc,char *argv[])
 
                 //ATTEMPT UI HERE
 
-                    //gf2d_sprite_draw(healthBar, vector2d(500,500),vector2d(5,0.1),vector3d(0,0,0),gfc_color(1,1,1,0.1),1);
 
 
 

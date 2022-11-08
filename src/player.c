@@ -6,6 +6,7 @@
 #include "gf3d_camera.h"
 #include "collision.h"
 #include "player.h"
+#include "gf3d_sprite.h"
 
 
 void player_think(Entity *self);
@@ -35,13 +36,18 @@ Entity *player_new(Vector3D position)
     ent->height = 40;
     ent->width = 10;
     ent->depth = 10;
-    ent->health = 5;
+    ent->health = 100;
+    ent->maxHealth = 100;
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
     ent->currentSpeed = 0;
     ent->maxWalkSpeed = 2.5;
     ent->maxRunSpeed = 4;
+    ent->damageBuffer = 0;
+    ent->damageBufferCount = 100;
+    ent->currentWeapon = 1;
+    ent->weaponSprite = gf3d_sprite_load("images/sword.png", 128, 256, 1);
     ent->iFrame = 0;
     ent->iFrameTime = 0;
     ent->iFrameMax = 32; // i think 16 = 1 second?
@@ -77,6 +83,12 @@ SDL_PumpEvents();
     vector3d_set_magnitude(&forward,0.1);
     vector3d_set_magnitude(&right,0.1);
     vector3d_set_magnitude(&up,0.1);
+
+
+
+
+    if(self->damageBuffer > 0) self->damageBuffer--;
+
 
 //old move system
     /*
@@ -188,6 +200,36 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
     }
 
     //if(keys[SDL_SCANCODE_SPACE])
+
+
+    //WEAPON ZONE
+
+    if(gfc_input_key_pressed("1"))
+    {
+        self->weaponSprite = gf3d_sprite_load("images/sword.png", 128,256, 1);
+    }
+    if(gfc_input_key_pressed("2"))
+    {
+        self->weaponSprite = gf3d_sprite_load("images/bow.png", 128,256, 1);
+    }
+    if(gfc_input_key_pressed("3"))
+    {
+        self->weaponSprite = gf3d_sprite_load("images/staff.png", 128,256, 1);
+    }
+    if(gfc_input_key_pressed("4"))
+    {
+        self->weaponSprite = gf3d_sprite_load("images/hammer.png", 128,256, 1);
+    }
+    if(gfc_input_key_pressed("5"))
+    {
+        self->weaponSprite = gf3d_sprite_load("images/fist.png", 128,256, 1);
+    }
+
+    //WEAPON ZONE
+
+
+
+
     if(gfc_input_key_pressed(" "))
     {
         self->velocity.z = 0;

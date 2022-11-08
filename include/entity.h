@@ -5,7 +5,7 @@
 #include "gf3d_model.h"
 
 #include "collision.h"
-
+#include "gf3d_sprite.h"
 
 typedef struct Entity_S
 {
@@ -51,7 +51,8 @@ typedef struct Entity_S
     int         jumpTimer;
 
 
-
+    int         damageBuffer;
+    int         damageBufferCount;
 
     Vector3D    position;  
     Vector3D    velocity;
@@ -61,9 +62,12 @@ typedef struct Entity_S
     Vector3D    scale;
     Vector3D    rotation;
     
+    Uint8       currentWeapon; //1 for sword, 2, for bow, 3 for staff, 4 for hammer, 5 for fist
+    Sprite*     weaponSprite;
 
 
-    Uint32      health;     /**<entity dies when it reaches zero*/
+    float      health;     /**<entity dies when it reaches zero*/
+    float      maxHealth;
     // WHATEVER ELSE WE MIGHT NEED FOR ENTITIES
     struct Entity_S *target;    /**<entity to target for weapons / ai*/
     
