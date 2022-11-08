@@ -50,7 +50,7 @@ Entity* mushroom_blue_new(Vector3D position)
     ent->jumpTimer = 0;
     ent->jumpTimerMax = 100;
     ent->attacking = 0;
-    ent->attackRange = 150;
+    ent->attackRange = 350;
 
     vector3d_copy(ent->position,position);
     return ent;
@@ -77,7 +77,14 @@ void mushroom_blue_think(Entity* self)
    // slog("pos.z %f", self->position.z);
 
 
-
+    if(self->damageBuffer > 0) self->damageBuffer--;
+   if(self->health == 0)//DO DEATH STUFF
+    {
+        self->scale.z -= 0.1;
+        vector3d_copy(self->velocity, vector3d(0,0,0));
+        //entity_free(self);
+        if(self->scale.z <= 0) entity_free(self);
+    }
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)
    {
@@ -93,6 +100,7 @@ void mushroom_blue_think(Entity* self)
             jumpDir.y = jumpDir.y * 1.5;
             jumpDir.z = 2;
 
+            DoDamage(self, player, 10);
 
             ApplyVelocity(self, jumpDir);
        }
@@ -140,9 +148,9 @@ void mushroom_blue_think(Entity* self)
         }
         else
         {
-            jumpDir.x = jumpDir.x * 5;
-            jumpDir.y = jumpDir.y * 5;
-            jumpDir.z = 2;
+            jumpDir.x = jumpDir.x * 15;
+            jumpDir.y = jumpDir.y * 15;
+            jumpDir.z = 1;
         }
 
 

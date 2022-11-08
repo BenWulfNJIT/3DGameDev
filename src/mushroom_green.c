@@ -76,7 +76,26 @@ void mushroom_green_think(Entity* self)
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
 
+    if(self->damageBuffer > 0) self->damageBuffer--;
+   if(self->health == 0)//DO DEATH STUFF
+    {
+        self->scale.z -= 0.1;
+        vector3d_copy(self->velocity, vector3d(0,0,0));
+        //entity_free(self);
 
+        if(self->scale.z <= 0)
+        {
+
+            mushroom_green_small_new(self->position, vector3d(1,0,2));
+            mushroom_green_small_new(self->position, vector3d(-1,0,2));
+            mushroom_green_small_new(self->position, vector3d(0,1,2));
+            mushroom_green_small_new(self->position, vector3d(0,-1,2));
+
+
+            entity_free(self);
+
+        }
+    }
 
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)
@@ -140,8 +159,8 @@ void mushroom_green_think(Entity* self)
         }
         else
         {
-            jumpDir.x = jumpDir.x * 5;
-            jumpDir.y = jumpDir.y * 5;
+            jumpDir.x = jumpDir.x * 1.5;
+            jumpDir.y = jumpDir.y * 1.5;
             jumpDir.z = 2;
         }
 

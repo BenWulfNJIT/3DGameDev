@@ -4,7 +4,7 @@
 #include "entity.h"
 #include "physics.h"
 
-Entity* mushroom_green_small_new(Vector3D position);
+Entity* mushroom_green_small_new(Vector3D position, Vector3D velocity);
 
 
 #endif

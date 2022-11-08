@@ -50,7 +50,8 @@ typedef struct Entity_S
     Uint8       state; //idle, searching, fighting, fleeing? idk
     int         jumpTimerMax;
     int         jumpTimer;
-
+    int         bfmSpawnTimer;
+    int         bfmSpawnTimerMax;
 
     int         damageBuffer;
     int         damageBufferCount;

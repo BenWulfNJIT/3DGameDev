@@ -7,7 +7,7 @@
 
 void mushroom_green_small_think(Entity* self);
 
-Entity* mushroom_green_small_new(Vector3D position)
+Entity* mushroom_green_small_new(Vector3D position, Vector3D velocity)
 {
 
     Entity *ent = NULL;
@@ -32,7 +32,7 @@ Entity* mushroom_green_small_new(Vector3D position)
 
 
     //scale.x = width.x/orig model
-
+    vector3d_copy(ent->velocity, velocity);
     vector3d_copy(ent->scale, vector3d(ent->width/ent->initSize.x, ent->depth/ent->initSize.y, ent->height/ent->initSize.z));
 
 
@@ -76,7 +76,14 @@ void mushroom_green_small_think(Entity* self)
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
 
-
+    if(self->damageBuffer > 0) self->damageBuffer--;
+   if(self->health == 0)//DO DEATH STUFF
+    {
+        self->scale.z -= 0.1;
+        vector3d_copy(self->velocity, vector3d(0,0,0));
+        //entity_free(self);
+        if(self->scale.z <= 0) entity_free(self);
+    }
 
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)

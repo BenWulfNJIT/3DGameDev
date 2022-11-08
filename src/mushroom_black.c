@@ -73,8 +73,13 @@ if(player)
     }
     if(self->health == 0)//DO DEATH STUFF
     {
-        entity_free(self);
+        self->scale.z -= 0.1;
+        vector3d_copy(self->velocity, vector3d(0,0,0));
+        //entity_free(self);
+        if(self->scale.z <= 0) entity_free(self);
     }
+
+
     //do think stuff
     //need to set a timer for this but
 

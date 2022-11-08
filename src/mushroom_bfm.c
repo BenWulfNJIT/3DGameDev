@@ -29,7 +29,8 @@ Entity* mushroom_bfm_new(Vector3D position)
     //ent->size.x = 8; //height
     //ent->size.y = 16; //width
     //ent->size.z = 16; //depth
-
+    ent->bfmSpawnTimer = 0;
+    ent->bfmSpawnTimerMax = 600;
     ent->health = 100;
     ent->damageBuffer = 0;
     ent->damageBufferCount = 60;
@@ -76,7 +77,32 @@ void mushroom_bfm_think(Entity* self)
     //slog("scale %f", self->scale.z);
    // slog("pos.z %f", self->position.z);
 
+   self->bfmSpawnTimer++;
 
+   if(self->bfmSpawnTimer == self->bfmSpawnTimerMax)
+   {
+    //spawn random mush
+       float random = gfc_random();
+       //slog("Test %f", random);
+
+       if(random > 0 && random < 0.25) mushroom_black_new(self->position);
+
+        if(random > 0.25 && random <0.5)mushroom_green_new(self->position);
+        if(random > 0.5 && random < 0.75)mushroom_blue_new(self->position);
+        if(random > 0.75 && random < 1)mushroom_red_new(self->position);
+
+       self->bfmSpawnTimer = 0;
+   }
+
+
+    if(self->damageBuffer > 0) self->damageBuffer--;
+   if(self->health == 0)//DO DEATH STUFF
+    {
+        self->scale.z -= 0.1;
+        vector3d_copy(self->velocity, vector3d(0,0,0));
+        //entity_free(self);
+        if(self->scale.z <= 0) entity_free(self);
+    }
 
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)

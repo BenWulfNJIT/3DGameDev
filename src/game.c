@@ -117,7 +117,7 @@ int main(int argc,char *argv[])
     Entity* redMush = mushroom_red_new(vector3d(1000,-1000,30));
     Entity* greenMush = mushroom_green_new(vector3d(900,-900,30));
     Entity* blueMush = mushroom_blue_new(vector3d(800,-800,30));
-    Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
+    //Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
     Entity* bfmMush = mushroom_bfm_new(vector3d(600,-600,30));
 
 
