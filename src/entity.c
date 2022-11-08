@@ -183,7 +183,7 @@ void ApplyGravity()
             //slog("Apply gravity to player hopefully");
             ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
         }
-        else if(entity_manager.entity_list[i].type == 4)
+        else if(entity_manager.entity_list[i].type == 4 && entity_manager.entity_list[i].hasGravity == 1)
         {
 
             ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.05));

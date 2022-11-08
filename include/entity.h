@@ -61,6 +61,23 @@ typedef struct Entity_S
     Vector3D    acceleration;
     
     int         ttl; //time to live for projectiles
+    int         airttl;
+    int         airttlMAX;
+    int         hasGravity; //0 for no 1 for yes
+
+    Uint8       hasSword1;
+    Uint8       hasSword2;
+    Uint8       hasBow1;
+    Uint8       hasBow2;
+    Uint8       hasStaff1;
+    Uint8       hasStaff2;
+    Uint8       hasHammer1;
+    Uint8       hasHammer2;
+    Uint8       hasFist1;
+    Uint8       hasFist2;
+
+
+
 
     Vector3D    scale;
     Vector3D    rotation;

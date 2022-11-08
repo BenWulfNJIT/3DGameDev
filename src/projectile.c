@@ -22,6 +22,8 @@ void projectile_think(Entity *self)
     }
     else//NOT GROUNDED
     {
+        self->airttl--;
+        if(self->airttl <= 0) entity_free(self);
 
 
         nearest = GetNearestEnemy(self);
@@ -51,7 +53,7 @@ void projectile_think(Entity *self)
 }
 void projectile_think(Entity *self);
 
-Entity *projectile_new(Vector3D position, Vector3D velocity)
+Entity *projectile_new(Vector3D position, Vector3D velocity, int airttl, int gravity)
 {
     Entity *ent = NULL;
 
@@ -76,6 +78,8 @@ Entity *projectile_new(Vector3D position, Vector3D velocity)
     ent->type = 4;
     ent->team = 1;
     ent->ttl = 180;
+    ent->airttl = airttl;
+    ent->hasGravity = gravity;
     vector3d_copy(ent->position,position);
     vector3d_copy(ent->velocity, velocity);
     return ent;

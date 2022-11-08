@@ -48,6 +48,17 @@ Entity *player_new(Vector3D position)
     ent->damageBuffer = 0;
     ent->damageBufferCount = 100;
     ent->currentWeapon = 1;
+    ent->hasSword1 = 1;
+    ent->hasSword2 = 1;
+    ent->hasBow1 = 1;
+    ent->hasBow2 = 1;
+    ent->hasStaff1 = 1;
+    ent->hasStaff2 = 1;
+    ent->hasHammer1 = 1;
+    ent->hasHammer2 = 1;
+    ent->hasFist1 = 1;
+    ent->hasFist2 = 1;
+
     ent->weaponSprite = gf3d_sprite_load("images/sword.png", 128, 256, 1);
     ent->iFrame = 0;
     ent->iFrameTime = 0;
@@ -231,15 +242,28 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
         self->weaponSprite = gf3d_sprite_load("images/fist.png", 128,256, 1);
     }
 
+    Vector3D direction;
 
     if(self->cameraLock == 0 && gfc_input_key_pressed("e"))
     {
         switch(self->currentWeapon)
         {
-            case 1:
+            case 1://sword
+                if(self->hasSword1 == 0) break;
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x * 5;
+                direction.y = direction.y * 5;
+                direction.z = direction.z * 5;
+
+                //Vector3D startPos = vector3d(self->position.x, self->position.y, self->position.z/2);
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 10, 0);
+
                 break;
-            case 2:
-                Vector3D direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+            case 2://bow
+                if(self->hasBow1 == 0) break;
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
                 vector3d_normalize(&direction);
                 //vector3d_set_magnitude(&direction, 3),
                 direction.x = direction.x * 20;
@@ -247,21 +271,199 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
                 direction.z = direction.z * 20;
 
                 //Vector3D startPos = vector3d(self->position.x, self->position.y, self->position.z/2);
-                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction);
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
 
                 break;
-            case 3:
+            case 3://staff
+                if(self->hasStaff1 == 0) break;
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+
+                direction.z = direction.z +2;
+
+                //Vector3D startPos = vector3d(self->position.x, self->position.y, self->position.z/2);
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
+
                 break;
-            case 4:
+            case 4://hammer
+                if(self->hasHammer1 == 0) break;
+
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x * 0.5;
+                direction.y = direction.y * 0.5;
+                direction.z = direction.z * 0.5;
+
+                direction.z = direction.z + 0.1;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 40, 0);
+
+                direction.z = direction.z + 0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 40, 0);
+
+                direction.z = direction.z + 0.3;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 40, 0);
+
+                direction.z = direction.z + 0.4;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 40, 0);
+
                 break;
-            case 5:
+            case 5://fist
+                if(self->hasFist1 == 0) break;
+
                 break;
 
         }
     }
 
+   if(self->cameraLock == 0 && gfc_input_key_pressed("q"))
+    {
+        switch(self->currentWeapon)
+        {
+            case 1://sword
+                if(self->hasSword2 == 0) break;
+                direction = vector3d(cos(self->rotation.z +1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
 
 
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                break;
+            case 2://bow
+                if(self->hasBow2 == 0) break;
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+
+
+                direction.x = direction.x * 20;
+                direction.y = direction.y * 20;
+                direction.z = direction.z * 20;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
+
+                direction.x = direction.x + gfc_random();
+                direction.y = direction.y + gfc_random();
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
+
+
+                direction.x = direction.x + gfc_random();
+                direction.y = direction.y + gfc_random();
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
+
+
+                direction.x = direction.x + gfc_random();
+                direction.y = direction.y + gfc_random();
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 1000, 1);
+
+
+
+                break;
+            case 3://staff
+                if(self->hasStaff2 == 0) break;
+                direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.z = direction.z  + 0.5;
+
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                direction.z = direction.z +1;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +1.5;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +2.5;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +3;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +3.5;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +4;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +4.5;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                                direction.z = direction.z +5;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 500, 1);
+
+                break;
+            case 4://hammer
+                if(self->hasHammer2 == 0) break;
+
+
+                  direction = vector3d(cos(self->rotation.z + 1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x * 1;
+                direction.y = direction.y * 1;
+                direction.z = direction.z * 1;
+
+                direction.z = direction.z + 0.1;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z + 0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z + 0.3;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z + 0.4;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+
+                direction.z = direction.z - 0.1;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z - 0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z - 0.3;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+                direction.z = direction.z - 0.4;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 60, 0);
+
+
+                break;
+            case 5://fist
+                if(self->hasFist2 == 0) break;
+
+                break;
+
+        }
+    }
 
 
     //WEAPON ZONE
