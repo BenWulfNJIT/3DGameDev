@@ -26,6 +26,15 @@ void ApplyVelocity(Entity* ent, Vector3D velocity)
     ent->velocity.y += velocity.y;
     ent->velocity.z += velocity.z;
 
+    if(ent->type ==0)
+    {
+
+        if(ent->position.x > 1900)ent->position.x = 1899;
+        if(ent->position.x < -1900)ent->position.x = -1899;
+        if(ent->position.y > 1900)ent->position.y = 1899;
+        if(ent->position.y < -1900)ent->position.y = -1899;
+
+    }
 
     ent->position.x += velocity.x;
     ent->position.y += velocity.y;
@@ -35,6 +44,10 @@ void ApplyVelocity(Entity* ent, Vector3D velocity)
     {
         ent->position.z = ent->height/2;
         ent->velocity.z = 0;
+        if(ent->type == 0)
+        {
+            ent->jumpCount = ent->jumpCountMax;
+        }
     }
 
 }

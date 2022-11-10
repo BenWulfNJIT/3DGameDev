@@ -62,6 +62,7 @@ void mushroom_green_think(Entity* self)
     if (!self)return;
 
     Entity* player = GetPlayer();
+    if(player->timeCold == 1) return;
 
     if(player)
     {
@@ -112,7 +113,7 @@ void mushroom_green_think(Entity* self)
             jumpDir.y = jumpDir.y * 1.5;
             jumpDir.z = 2;
 
-
+            DoDamage(self, player, 10);
             ApplyVelocity(self, jumpDir);
        }
 

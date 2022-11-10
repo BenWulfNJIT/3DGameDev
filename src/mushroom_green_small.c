@@ -62,6 +62,7 @@ void mushroom_green_small_think(Entity* self)
     if (!self)return;
 
     Entity* player = GetPlayer();
+    if(player->timeCold == 1) return;
 
     if(player)
     {

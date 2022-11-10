@@ -1,4 +1,5 @@
-#include <SDL.h>            
+#include <SDL.h>
+#include <SDL_ttf.h>
 #include <math.h>
 #include "simple_logger.h"
 #include "gfc_input.h"
@@ -27,6 +28,14 @@
 #include "mushroom_green_small.h"
 #include "mushroom_bfm.h"
 
+#include "barrel_experience.h"
+#include "barrel_health.h"
+#include "barrel_trap.h"
+#include "barrel_mimic.h"
+#include "barrel_jump.h"
+
+
+
 
 extern int __DEBUG;
 
@@ -38,6 +47,21 @@ int main(int argc,char *argv[])
     Sprite *mouse = NULL;
     Sprite *healthBar = NULL;
     Sprite *crosshair = NULL;
+    Sprite *skillTree = NULL;
+
+    Sprite *doubleJump = NULL;
+    Sprite* lifeSteal = NULL;
+    Sprite* holyShield = NULL;
+    Sprite* critChance= NULL;
+    Sprite* knockBackBoost= NULL;
+    Sprite* raininAgus= NULL;
+    Sprite* brokenStopwatch= NULL;
+    Sprite* slowFall= NULL;
+    Sprite* superJump= NULL;
+    Sprite* sonicSpeed= NULL;
+
+
+
     int mousex,mousey;
     float healthWidth, healthHeight;
     //SDL_GetWindowSize(gf3d_vgraphics_get_SDL_Window(), &screenWidth, &screenHeight);
@@ -69,6 +93,22 @@ int main(int argc,char *argv[])
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
     healthBar = gf3d_sprite_load("images/healthBar.png", 1000, 40, 1);
     crosshair = gf3d_sprite_load("images/crosshair.png", 32,32,1);
+    skillTree = gf3d_sprite_load("images/skillTree.png", 700, 700, 1);
+
+
+    doubleJump = gf3d_sprite_load("images/doubleJump.png", 256, 256, 1);
+    lifeSteal = gf3d_sprite_load("images/lifeSteal.png", 256, 256, 1);
+    holyShield = gf3d_sprite_load("images/holyShield.png", 256, 256, 1);
+    critChance= gf3d_sprite_load("images/critChance.png", 256, 256, 1);
+    knockBackBoost= gf3d_sprite_load("images/knockBack.png", 256, 256, 1);
+    raininAgus= gf3d_sprite_load("images/raininAgus.png", 256, 256, 1);
+    brokenStopwatch= gf3d_sprite_load("images/brokenStopwatch.png", 256, 256, 1);
+    slowFall= gf3d_sprite_load("images/slowFall.png", 256, 256, 1);
+    superJump= gf3d_sprite_load("images/superJump.png", 256, 256, 1);
+    sonicSpeed= gf3d_sprite_load("images/sonicSpeed.png", 256, 256, 1);
+
+
+
     w = world_load("config/testworld.json");
 
     //w = world_load("config/grassTest.json");
@@ -113,12 +153,28 @@ int main(int argc,char *argv[])
     //WULF
 
     //ENEMY SPAWNS
-    Entity* blackMush = mushroom_black_new(vector3d(1100,-1100,30));
-    Entity* redMush = mushroom_red_new(vector3d(1000,-1000,30));
-    Entity* greenMush = mushroom_green_new(vector3d(900,-900,30));
-    Entity* blueMush = mushroom_blue_new(vector3d(800,-800,30));
+    Entity* blackMush = mushroom_black_new(vector3d(600,-600,30));
+    Entity* redMush = mushroom_red_new(vector3d(500,-500,30));
+    Entity* greenMush = mushroom_green_new(vector3d(400,-400,30));
+    Entity* blueMush = mushroom_blue_new(vector3d(300,-300,30));
     //Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
-    Entity* bfmMush = mushroom_bfm_new(vector3d(600,-600,30));
+    Entity* bfmMush = mushroom_bfm_new(vector3d(200,-200,30));
+
+
+    Entity* healthBarrel = barrel_health_new(vector3d(1200, -1200, 30));
+    Entity* experienceBarrel = barrel_experience_new(vector3d(1250, -1200, 30));
+    Entity* jumpBarrel = barrel_jump_new(vector3d(1300, -1200, 30));
+    Entity* mimicBarrel = barrel_mimic_new(vector3d(1350, -1200, 30));
+    Entity* trapBarrel = barrel_trap_new(vector3d(1400, -1200, 30));
+
+
+    Entity* sky1 = sky_new(vector3d(0,2000,0), vector3d(0,0,0));
+    Entity* sky2 = sky_new(vector3d(0,-2000,0),vector3d(0,0,0));
+    Entity* sky3 = sky_new(vector3d(2000,0,0), vector3d(0,0,1.57));
+
+    Entity* sky4 = sky_new(vector3d(-2000,0,0), vector3d(0,0,1.57));
+
+    Entity* sky5 = sky_new(vector3d(400,500,3000), vector3d(1.57,0,0));
 
 
     //Vector3D Test = GetSize(agu);
@@ -239,10 +295,80 @@ int main(int argc,char *argv[])
                     gf3d_sprite_draw(healthBar, vector2d( (-(500-((player->health/player->maxHealth)*500)))    , screenHeight-100), vector2d(1,1), 1);
                     gf3d_sprite_draw(crosshair, vector2d(screenWidth/2-16, screenHeight/2-16), vector2d(1,1), 1);
 
+                    //gf3d_sprite_draw(doubleJump,vector2d(screenWidth-500, screenHeight-500), vector2d(1,1), 1);
+
+
+
+
+                    if(player->level >10) player->level = 10;
+                    switch(player->level)
+                    {
+                                                case 10:
+                            gf3d_sprite_draw(sonicSpeed,vector2d(screenWidth-1280, 0), vector2d(1,1), 1);
+                            player->hasSonicSpeed = 1;
+
+                                                    case 9:
+                            gf3d_sprite_draw(superJump,vector2d(screenWidth-1152, 0), vector2d(1,1), 1);
+                            player->hasSuperJump = 1;
+                                                    case 8:
+                            gf3d_sprite_draw(slowFall,vector2d(screenWidth-1024, 0), vector2d(1,1), 1);
+                            player->hasSlowFall = 1;
+                                                    case 7:
+                            gf3d_sprite_draw(brokenStopwatch,vector2d(screenWidth-896, 0), vector2d(1,1), 1);
+                            player->hasBrokenStopwatch = 1;
+
+                                                    case 6:
+                            gf3d_sprite_draw(raininAgus,vector2d(screenWidth-768, 0), vector2d(1,1), 1);
+                            player->hasAguRain = 1;
+
+                                                    case 5:
+                            gf3d_sprite_draw(knockBackBoost,vector2d(screenWidth-640, 0), vector2d(1,1), 1);
+                            player->hasKnockbackBoost = 1;
+
+
+                        case 4:
+                            gf3d_sprite_draw(critChance,vector2d(screenWidth-512, 0), vector2d(1,1), 1);
+                            player->hasCritChance = 1;
+                        case 3:
+                            gf3d_sprite_draw(holyShield,vector2d(screenWidth-384, 0), vector2d(1,1), 1);
+                            player->hasHolyShield = 1;
+
+                        case 2:
+                            gf3d_sprite_draw(lifeSteal,vector2d(screenWidth-256, 0), vector2d(1,1), 1);
+                            player->hasLifeSteal = 1;
+                        case 1:
+                            gf3d_sprite_draw(doubleJump,vector2d(screenWidth-128, 0), vector2d(1,1), 1);
+                            player->jumpCountMax = 2;
+                            //if(player->jumpCount < 2)player->jumpCount++;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    }
+
+
+                //slog("UHH %i", player->level);
+                    //if(player->level >=1)gf3d_sprite_draw(doubleJump,vector2d(screenWidth-500, screenHeight-500), vector2d(1,1), 1);
                 }
                 if(player->cameraLock)//DO MENU UI STUFF
                 {
+                    //gf3d_sprite_draw(skillTree, vector2d(screenWidth-400,100), vector2d(1,1), 1);
+
+
                     gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
+
+
 
                 }
 

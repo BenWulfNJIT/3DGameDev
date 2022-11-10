@@ -76,8 +76,27 @@ typedef struct Entity_S
     Uint8       hasFist1;
     Uint8       hasFist2;
 
+    //SKILLS or whatever
+    Uint8       jumpCount;
+    Uint8       jumpCountMax;
+    float       jumpPower;
+    Uint8       hasSuperJump;
+    Uint8       hasLifeSteal; //0 for no 1 for yes
+    Uint8       hasSlowFall;// 0 for no 1 for yes
+    Uint8       isSlowFallActive; //0 for no 1 for yes
+    Uint8       hasHolyShield;
+    Uint8       hasCritChance;
+    Uint8       hasKnockbackBoost;
+    Uint8       hasAguRain;
+    Uint8       hasBrokenStopwatch;
+    Uint8       hasSonicSpeed;
+    Uint8       timeCold;
 
+    int         experience;
+    int         level;
+    int         skillPoints;
 
+    Uint8       giveUpgrade;
 
     Vector3D    scale;
     Vector3D    rotation;

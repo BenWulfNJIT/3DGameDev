@@ -63,6 +63,8 @@ void mushroom_blue_think(Entity* self)
 
     Entity* player = GetPlayer();
 
+    if(player->timeCold == 1) return;
+
     if(player)
     {
         //slog("success??");

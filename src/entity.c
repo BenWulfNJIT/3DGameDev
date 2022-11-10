@@ -181,7 +181,16 @@ void ApplyGravity()
         else if(entity_manager.entity_list[i].type == 0 || entity_manager.entity_list[i].type == 1)
         {
             //slog("Apply gravity to player hopefully");
-            ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
+            if(entity_manager.entity_list[i].type == 0 && entity_manager.entity_list[i].isSlowFallActive == 1)
+            {
+
+                ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.01));
+
+            }
+            else
+            {
+                ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
+            }
         }
         else if(entity_manager.entity_list[i].type == 4 && entity_manager.entity_list[i].hasGravity == 1)
         {

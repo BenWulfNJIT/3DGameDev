@@ -38,7 +38,11 @@ void projectile_think(Entity *self)
          knockback.x = knockback.x * 1.5;
         knockback.y = knockback.y * 1.5;
          knockback.z = 2;
-
+        if(player->hasKnockbackBoost == 1)
+        {
+         knockback.x = knockback.x * 1.5;
+         knockback.y = knockback.y * 1.5;
+        }
          ApplyVelocity(nearest, knockback);
         }
        //if(BadCollisionCheck(self, GetNearestEnemy(self)))

@@ -9,6 +9,7 @@
 #include "gf3d_sprite.h"
 #include "projectile.h"
 #include "gfc_vector.h"
+#include "mushroom_green.h"
 
 void player_think(Entity *self);
 void player_update(Entity *self);
@@ -58,7 +59,38 @@ Entity *player_new(Vector3D position)
     ent->hasHammer2 = 1;
     ent->hasFist1 = 1;
     ent->hasFist2 = 1;
+    ent->jumpCount = 0;
+    ent->jumpCountMax =1;
+    ent->jumpPower = 5;
+    ent->hasLifeSteal = 0;
+    ent->hasSlowFall = 0;
+    ent->hasSuperJump = 0;
+    ent->isSlowFallActive = 0;
+    ent->hasHolyShield = 0;
+    ent->hasCritChance = 0;
+    ent->hasKnockbackBoost = 0;
+    ent->hasAguRain = 0;
+    ent->hasBrokenStopwatch = 0;
+    ent->hasSonicSpeed = 0;
+    ent->experience = 0;
+    ent->level = 0;
+    ent->timeCold = 0;
+    ent->skillPoints=0;
+    /*
 
+         Uint8       jumpCount;
+    Uint8       jumpCountMax;
+    float       jumpPower;
+    Uint8       hasLifeSteal; //0 for no 1 for yes
+    Uint8       hasSlowFall;// 0 for no 1 for yes
+    Uint8       isSlowFallActive; //0 for no 1 for yes
+    Uint8       hasHolyShield;
+    Uint8       hasCritChance;
+    Uint8       hasKnockbackBoost;
+    Uint8       hasAguRain;
+    Uint8       hasBrokenStopwatch;
+    Uint8       hasSonicTime;
+     */
     ent->weaponSprite = gf3d_sprite_load("images/sword.png", 128, 256, 1);
     ent->iFrame = 0;
     ent->iFrameTime = 0;
@@ -97,11 +129,21 @@ SDL_PumpEvents();
     vector3d_set_magnitude(&up,0.1);
 
 
-
+slog("X: %f Y: %f", self->position.x, self->position.y);
 
     if(self->damageBuffer > 0) self->damageBuffer--;
 
-
+if(self->hasBrokenStopwatch == 1)
+{
+ if(self->timeCold == 0)
+ {
+     if(gfc_random() < 0.05)self->timeCold =1;
+ }
+ else
+ {
+     if(gfc_random() < 0.05) self->timeCold = 0;
+ }
+}
 //old move system
     /*
     if (keys[SDL_SCANCODE_W])
@@ -151,7 +193,7 @@ SDL_PumpEvents();
         //self->velocity.y += moveY;
         //if(keys[SDL_SCANCODE_LSHIFT])
 
-        if(keys[SDL_SCANCODE_LSHIFT])
+        if(keys[SDL_SCANCODE_LSHIFT] && self->hasSonicSpeed == 1)
         {
             if(self->currentSpeed <=self->maxRunSpeed) self->currentSpeed += 0.6;
         }
@@ -215,7 +257,27 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
 
 
     //WEAPON ZONE
+    if(self->hasAguRain == 1)
+    {
+        if(gfc_random() < 0.1)
+        {
+            projectile_new(vector3d(self->position.x+(gfc_random()*1000-500), self->position.y+(gfc_random()*1000-500), self->position.z+100), vector3d(0,0,-1), 100, 1);
+        }
+    }
 
+    if(self->hasSlowFall == 1 && keys[SDL_SCANCODE_SPACE])
+    {
+        self->isSlowFallActive = 1;
+    }
+    else
+    {
+        self->isSlowFallActive = 0;
+    }
+
+    if(gfc_input_key_pressed("p"))
+    {
+        mushroom_green_new(self->position);
+    }
     if(gfc_input_key_pressed("1"))
     {
         self->currentWeapon = 1;
@@ -311,7 +373,34 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
                 break;
             case 5://fist
                 if(self->hasFist1 == 0) break;
+direction = vector3d(cos(self->rotation.z +1.57), sin(self->rotation.z+1.57), sin(self->rotation.x));
+                vector3d_normalize(&direction);
+                //vector3d_set_magnitude(&direction, 3),
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
 
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
+
+                direction.x = direction.x + gfc_random()*0.4-0.2;
+                direction.y = direction.y + gfc_random()*0.4-0.2;
+                direction.z = direction.z + gfc_random()*0.4-0.2;
+                projectile_new(vector3d(self->position.x, self->position.y, self->position.z), direction, 30, 0);
                 break;
 
         }
@@ -471,10 +560,21 @@ if(self->currentSpeed <=self->maxWalkSpeed) self->currentSpeed += 0.3;
 
 
 
-    if(gfc_input_key_pressed(" "))
+    if(gfc_input_key_pressed(" ") && self->jumpCount > 0)
     {
+        self->jumpCount--;
         self->velocity.z = 0;
-        ApplyVelocity(self, vector3d(0,0, 5));
+        if(self->hasSuperJump == 1)
+        {
+                        ApplyVelocity(self, vector3d(0,0, 10));
+
+        }
+        else
+        {
+                        ApplyVelocity(self, vector3d(0,0, 5));
+
+
+        }
     }
 
 //slog("angle: %f", self->rotation.x);
