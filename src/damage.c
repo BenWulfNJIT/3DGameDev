@@ -32,6 +32,9 @@ void DoDamage(Entity* attacker, Entity* receiver, int damage)
                 if(attacker->experience >= 200)
                 {
                     attacker->level++;
+                    float test = gfc_random();
+                    if(test>0.5)attacker->maxHealth += 50;
+                    if(test<0.5)attacker->jumpCountMax+=;
                     attacker->experience = 0;
                     attacker->skillPoints++;
                 }
