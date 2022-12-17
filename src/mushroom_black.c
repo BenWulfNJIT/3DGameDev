@@ -90,6 +90,31 @@ if(player)
    // slog("pos.z %f", self->position.z);
 
     if(self->damageBuffer > 0) self->damageBuffer--;
+  ///doanimation
+
+    if(self->animationState == 1)// squash
+    {
+        if(self->scale.z > 5)
+        {
+            self->scale.z -= 1;
+            self->scale.x+= 1;
+            self->scale.y += 1;
+
+        }
+    }
+
+    if(self->animationState == 2)// stretch
+    {
+
+        if(self->scale.x > 2)
+        {
+            self->scale.z += 1;
+            self->scale.x -= 1;
+            self->scale.y -=1;
+        }
+    }
+
+
 
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)
@@ -119,6 +144,7 @@ if(player)
     if(self->position.z <= self->height/2)
     {
         //TODO: set radius check so it only does stuff in range, ya know.
+        if(self->animationState == 2) self->animationState = 1;
 
         self->velocity.x = 0;
         self->velocity.y = 0;
@@ -162,6 +188,8 @@ if(player)
         ApplyVelocity(self, jumpDir);
         self->attacking = 1;
         self->jumpTimer = 0;
+                self->animationState = 2;
+
         }
     }
 

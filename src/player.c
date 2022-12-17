@@ -35,7 +35,7 @@ Entity *player_new(Vector3D position)
     vector3d_copy(ent->position,position);
 
     //vector3d_copy(ent->size, vector3d(50, 12, 7));
-    ent->height = 40;
+    ent->height = 120;
     ent->width = 10;
     ent->depth = 10;
     ent->health = 100;
@@ -143,6 +143,11 @@ if(self->hasBrokenStopwatch == 1)
  {
      if(gfc_random() < 0.05) self->timeCold = 0;
  }
+}
+
+if(gfc_input_key_pressed("o"))
+{
+    self->level++;
 }
 //old move system
     /*

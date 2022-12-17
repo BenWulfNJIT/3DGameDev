@@ -29,6 +29,9 @@ typedef struct Entity_S
     float       width;
     float       depth;
 
+
+
+
     float       iFrame; //0 for false (can be damaged) 1 for true (invincible)
     int         iFrameMax;
     int         iFrameTime;
@@ -97,6 +100,11 @@ typedef struct Entity_S
     int         skillPoints;
 
     Uint8       giveUpgrade;
+
+    //Animation things
+    Uint8       animationState;//0 return to normal? 1 squash down, 2 stretch up
+    int         squashTimer;
+    int         squashTimerMax;
 
     Vector3D    scale;
     Vector3D    rotation;

@@ -25,6 +25,9 @@ Entity* mushroom_red_new(Vector3D position)
     ent->height = 20;
     ent->width = 14;
     ent->depth = 14;
+    ent->animationState = 1;
+    ent->squashTimer = 0;
+    ent->squashTimerMax = 60;
     ent->initSize = GetOrigModelSize("models/mushroom_red.obj");
     //ent->size.x = 8; //height
     //ent->size.y = 16; //width
@@ -86,6 +89,33 @@ void mushroom_red_think(Entity* self)
         if(self->scale.z <= 0) entity_free(self);
     }
 
+
+    ///doanimation
+
+    if(self->animationState == 1)// squash
+    {
+        if(self->scale.z > 5)
+        {
+            self->scale.z -= 1;
+            self->scale.x+= 1;
+            self->scale.y += 1;
+
+        }
+    }
+
+    if(self->animationState == 2)// stretch
+    {
+
+        if(self->scale.x > 2)
+        {
+            self->scale.z += 1;
+            self->scale.x -= 1;
+            self->scale.y -=1;
+        }
+    }
+
+
+
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)
    {
@@ -116,6 +146,7 @@ void mushroom_red_think(Entity* self)
     {
         //TODO: set radius check so it only does stuff in range, ya know.
 
+        if(self->animationState == 2) self->animationState = 1;
         self->velocity.x = 0;
         self->velocity.y = 0;
         self->velocity.z = 0;
@@ -145,7 +176,7 @@ void mushroom_red_think(Entity* self)
         {
             jumpDir.x = jumpDir.x * 1.5;
             jumpDir.y = jumpDir.y * 1.5;
-            jumpDir.z = 2;
+            jumpDir.z = 4;
         }
         else
         {
@@ -158,6 +189,7 @@ void mushroom_red_think(Entity* self)
         ApplyVelocity(self, jumpDir);
         self->attacking = 1;
         self->jumpTimer = 0;
+        self->animationState = 2;
         }
     }
 

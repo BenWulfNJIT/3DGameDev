@@ -99,6 +99,34 @@ void mushroom_green_think(Entity* self)
     }
 
    Uint8 colliding = BadCollisionCheck(self, player);
+
+
+     ///doanimation
+
+    if(self->animationState == 1)// squash
+    {
+        if(self->scale.z > 5)
+        {
+            self->scale.z -= 1;
+            self->scale.x+= 1;
+            self->scale.y += 1;
+
+        }
+    }
+
+    if(self->animationState == 2)// stretch
+    {
+
+        if(self->scale.x > 2)
+        {
+            self->scale.z += 1;
+            self->scale.x -= 1;
+            self->scale.y -=1;
+        }
+    }
+
+
+
    if(colliding == 1 && self->attacking ==1)
    {
        //slog("COLLIDING");
@@ -126,6 +154,7 @@ void mushroom_green_think(Entity* self)
     if(self->position.z <= self->height/2)
     {
         //TODO: set radius check so it only does stuff in range, ya know.
+        if(self->animationState == 2) self->animationState = 1;
 
         self->velocity.x = 0;
         self->velocity.y = 0;
@@ -169,6 +198,8 @@ void mushroom_green_think(Entity* self)
         ApplyVelocity(self, jumpDir);
         self->attacking = 1;
         self->jumpTimer = 0;
+                self->animationState = 2;
+
         }
     }
 

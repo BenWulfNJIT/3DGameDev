@@ -105,6 +105,32 @@ void mushroom_bfm_think(Entity* self)
         if(self->scale.z <= 0) entity_free(self);
     }
 
+      ///doanimation
+
+    if(self->animationState == 1)// squash
+    {
+        if(self->scale.z > 15)
+        {
+            self->scale.z -= 1.5;
+            self->scale.x+= 1.5;
+            self->scale.y += 1.5;
+
+        }
+    }
+
+    if(self->animationState == 2)// stretch
+    {
+
+        if(self->scale.x > 4)
+        {
+            self->scale.z += 1.5;
+            self->scale.x -= 1.5;
+            self->scale.y -=1.5;
+        }
+    }
+
+
+
    Uint8 colliding = BadCollisionCheck(self, player);
    if(colliding == 1 && self->attacking ==1)
    {
@@ -133,6 +159,7 @@ void mushroom_bfm_think(Entity* self)
     if(self->position.z <= self->height/2)
     {
         //TODO: set radius check so it only does stuff in range, ya know.
+        if(self->animationState == 2) self->animationState = 1;
 
         self->velocity.x = 0;
         self->velocity.y = 0;
@@ -163,19 +190,21 @@ void mushroom_bfm_think(Entity* self)
         {
             jumpDir.x = jumpDir.x * 1.5;
             jumpDir.y = jumpDir.y * 1.5;
-            jumpDir.z = 2;
+            jumpDir.z = 4;
         }
         else
         {
             jumpDir.x = jumpDir.x * 5;
             jumpDir.y = jumpDir.y * 5;
-            jumpDir.z = 2;
+            jumpDir.z = 4;
         }
 
 
         ApplyVelocity(self, jumpDir);
         self->attacking = 1;
         self->jumpTimer = 0;
+                self->animationState = 2;
+
         }
     }
 
