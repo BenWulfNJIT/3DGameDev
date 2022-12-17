@@ -43,7 +43,7 @@ int main(int argc,char *argv[])
 {
     int done = 0;
     int a;
-    
+    int GameState = 1;// 0 default, 1 title menu, 2 game, 3 editor
     Sprite *mouse = NULL;
     Sprite *healthBar = NULL;
     Sprite *crosshair = NULL;
@@ -59,7 +59,7 @@ int main(int argc,char *argv[])
     Sprite* slowFall= NULL;
     Sprite* superJump= NULL;
     Sprite* sonicSpeed= NULL;
-
+    Sprite* title = NULL;
 
 
     int mousex,mousey;
@@ -107,7 +107,7 @@ int main(int argc,char *argv[])
     superJump= gf3d_sprite_load("images/superJump.png", 256, 256, 1);
     sonicSpeed= gf3d_sprite_load("images/sonicSpeed.png", 256, 256, 1);
 
-
+    title = gf3d_sprite_load("images/title.png", 1920, 1080, 1);
 
     w = world_load("config/testworld.json");
 
@@ -245,12 +245,26 @@ int main(int argc,char *argv[])
         //vector3d_copy(wireTest->position, player->position);
 
 
+
+        //while(GameState == 1)//DO TITLE STUFF
+        //{
+/*
+            gfc_input_update();
+
+        SDL_GetMouseState(&mousex,&mousey);
+        mouseFrame += 0.01;
+        if (mouseFrame >= 16)mouseFrame = 0;*/
+        slog("OOGA?");
+        slog("OOGA!");
+        //}
+
         if(mousex == screenWidth/2 && mousey == screenHeight/2)
         {
 
             startMouseX = mousex;
             startMouseY = mousey;
         }
+
         if(!player->cameraLock) SDL_WarpMouseInWindow(gf3d_vgraphics_get_SDL_Window(), screenWidth/2, screenHeight/2);
 
         gfc_input_update();
@@ -286,7 +300,42 @@ int main(int argc,char *argv[])
 
 
             //player->health--;
+    int broke = 0;
+                while(GameState == 1)
+                {
+                     gfc_input_update();
 
+        SDL_GetMouseState(&mousex,&mousey);
+        gf3d_vgraphics_render_start();
+
+                    //SDL_GetMouseState(&mousex,&mousey);
+
+
+                    gf3d_sprite_draw(title, vector2d(screenWidth/4, screenHeight/4), vector2d(1,1), 1);
+                    gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),(Uint32)mouseFrame);
+
+
+
+
+
+                                    gf3d_vgraphics_render_end();
+
+
+
+                                    if(gfc_input_key_pressed("l"))
+                                    {
+                                        GameState = 2;
+                                        broke = 1;
+                                        break;
+                                    }
+
+                }
+                if(broke == 1)
+                {
+                    broke = 0;
+                    continue;
+                }
+                slog("BROKE OUT I GUESS");
                 if(player->cameraLock == 0)//DO GAME UI STUFF
                 {
 
