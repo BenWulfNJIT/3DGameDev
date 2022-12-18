@@ -36,7 +36,7 @@
 #include "barrel_mimic.h"
 #include "barrel_jump.h"
 
-
+#include "fence.h"
 
 
 extern int __DEBUG;
@@ -137,7 +137,32 @@ int main(int argc,char *argv[])
 
 
     //gfc_matrix_scale(agu->modelMat, vector3d(10000,10000,10000));
-    
+    fence_new(vector3d(1000, -1000, 0));// corner
+
+    fence_new(vector3d(1000, -1100, 0));
+    fence_new(vector3d(1000, -1200, 0));
+    fence_new(vector3d(1000, -1300, 0));
+    fence_new(vector3d(1000, -1400, 0));
+    fence_new(vector3d(1000, -1500, 0));
+    fence_new(vector3d(1000, -1600, 0));
+    fence_new(vector3d(1000, -1700, 0));
+    fence_new(vector3d(1000, -1800, 0));
+
+
+
+
+
+
+    fence_new(vector3d(1100, -1000, 0));
+    fence_new(vector3d(1200, -1000, 0));
+    //fence_new(vector3d(1300, -1000, 0));
+    //fence_new(vector3d(1400, -1000, 0));
+    fence_new(vector3d(1500, -1000, 0));
+    fence_new(vector3d(1600, -1000, 0));
+    fence_new(vector3d(1700, -1000, 0));
+    fence_new(vector3d(1800, -1000, 0));
+
+
     slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
     player = player_new(vector3d(1200,-1200,500));
@@ -305,8 +330,8 @@ int main(int argc,char *argv[])
         SDL_GetMouseState(&mousex,&mousey);
         mouseFrame += 0.01;
         if (mouseFrame >= 16)mouseFrame = 0;*/
-        slog("OOGA?");
-        slog("OOGA!");
+        //slog("OOGA?");
+        //slog("OOGA!");
         //}
 
         if(mousex == screenWidth/2 && mousey == screenHeight/2)
@@ -389,7 +414,7 @@ int main(int argc,char *argv[])
 
                     continue;
                 }
-                slog("BROKE OUT I GUESS");
+                //slog("BROKE OUT I GUESS");
                 if(player->cameraLock == 0)//DO GAME UI STUFF
                 {
 

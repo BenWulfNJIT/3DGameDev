@@ -64,7 +64,7 @@ void mushroom_black_think(Entity* self)
     if (!self)return;
 
     Entity* player = GetPlayer();
-    if(player->timeCold == 1) return;
+    //if(player->timeCold == 1) return;
 slog("health: %f", self->health);
 slog("damagebuff: %i", self->damageBuffer);
 if(player)
@@ -169,7 +169,7 @@ if(player)
 
         distS = sqrt((int)distS);
 
-                slog("distanceS: %f", distS);
+                //slog("distanceS: %f", distS);
 
         if(distS > self->attackRange)
         {

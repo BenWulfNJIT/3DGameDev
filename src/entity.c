@@ -191,6 +191,17 @@ void ApplyGravity()
             {
                 ApplyVelocity(&entity_manager.entity_list[i], vector3d(0,0,-0.15));
             }
+            if(entity_manager.entity_list[i].type == 1 && entity_manager.entity_list[i].position.y < -900 &&entity_manager.entity_list[i].position.x>900)
+            {
+
+                    entity_manager.entity_list[i].velocity.x = 0;
+                    entity_manager.entity_list[i].velocity.y = 0;
+                    entity_manager.entity_list[i].velocity.z = 0;
+
+                    ApplyVelocity(&entity_manager.entity_list[i],vector3d(-8,8,6));
+
+            }
+
         }
         else if(entity_manager.entity_list[i].type == 4 && entity_manager.entity_list[i].hasGravity == 1)
         {
@@ -242,7 +253,7 @@ Vector3D GetOrigModelSize(char* filePath)
 
     }
 
-    slog("Width: %f",(maxX - minX));
+    //slog("Width: %f",(maxX - minX));
     //gf3d_model_free(model);
 
     gf3d_obj_free(object);

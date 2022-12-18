@@ -63,7 +63,7 @@ void mushroom_blue_think(Entity* self)
 
     Entity* player = GetPlayer();
 
-    if(player->timeCold == 1) return;
+    //if(player->timeCold == 1) return;
 
     if(player)
     {
@@ -166,7 +166,7 @@ void mushroom_blue_think(Entity* self)
 
         distS = sqrt((int)distS);
 
-                slog("distanceS: %f", distS);
+                //slog("distanceS: %f", distS);
 
         if(distS > self->attackRange)
         {

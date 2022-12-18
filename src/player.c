@@ -171,7 +171,7 @@ SDL_PumpEvents();
     vector3d_set_magnitude(&up,0.1);
 
 
-slog("X: %f Y: %f", self->position.x, self->position.y);
+//slog("X: %f Y: %f", self->position.x, self->position.y);
 
     if(self->damageBuffer > 0) self->damageBuffer--;
 
