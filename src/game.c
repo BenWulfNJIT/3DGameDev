@@ -89,6 +89,13 @@ int main(int argc,char *argv[])
     entity_system_init(1024);
 
 
+    // QUEST STUFF
+    int currentQuest = 0; //1-3
+    Sprite* quest1Sign = gf3d_sprite_load("images/quest1.png", 1040,1040,1);
+    Sprite* quest2Sign = gf3d_sprite_load("images/quest2.png", 1040,1040,1);
+    Sprite* quest3Sign = gf3d_sprite_load("images/quest3.png", 1040,1040,1);
+
+
 //AUDIO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 //Mix_Music *gMusic = NULL;
