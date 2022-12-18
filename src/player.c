@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <math.h>
 #include "simple_logger.h"
+#include "simple_json.h"
 #include "gfc_types.h"
 #include "gfc_input.h"
 #include "gf3d_camera.h"
@@ -28,6 +29,45 @@ Entity *player_new(Vector3D position)
     }
     
 //    ent->model = gf3d_model_load("dino");
+
+
+    //load player stats from config
+    SJson *playerFile = sj_load("src/playerConfig.json");
+    if(!playerFile)
+    {
+        slog("Failed to open player config json file");
+
+    }
+    SJson *playerData = sj_object_get_value(playerFile, "player");
+    if(!playerData)
+    {
+        slog("Failed to get player data from config");
+    }
+    SJson *playerWalk = sj_object_get_value(playerData, "speed");
+    SJson *playerSprint = sj_object_get_value(playerData, "sprint");
+    SJson *playerJump = sj_object_get_value(playerData, "jump");
+    SJson *playerDamage = sj_object_get_value(playerData, "damage");
+
+
+    float playerWalkv, playerSprintv, playerJumpv, playerDamagev;
+    sj_get_float_value(playerWalk,&playerWalkv);
+    sj_get_float_value(playerSprint,&playerSprintv);
+    sj_get_float_value(playerJump,&playerJumpv);
+    sj_get_float_value(playerDamage,&playerDamagev);
+
+    //slog("Maybe? %f", playerWalkv);
+
+    /*sj_free(playerWalk);
+    sj_free(playerSprint);
+    sj_free(playerJump);
+    sj_free(playerDamage);
+
+
+    sj_free(playerData);
+    sj_free(playerFile);
+    */
+    //end player loading
+
     ent->rotation.x = -3.14;
     ent->rotation.z = 0.5;
     ent->think = player_think;
@@ -44,8 +84,10 @@ Entity *player_new(Vector3D position)
     ent->type = 0;
     ent->moveType = 0;
     ent->currentSpeed = 0;
-    ent->maxWalkSpeed = 2.5;
-    ent->maxRunSpeed = 4;
+    ent->maxWalkSpeed = playerWalkv;
+    ent->maxRunSpeed = playerSprintv;
+    ent->jump = playerJumpv;
+    ent->damageBase = playerDamagev;
     ent->damageBuffer = 0;
     ent->damageBufferCount = 100;
     ent->currentWeapon = 1;
@@ -571,7 +613,7 @@ direction = vector3d(cos(self->rotation.z +1.57), sin(self->rotation.z+1.57), si
         self->velocity.z = 0;
         if(self->hasSuperJump == 1)
         {
-                        ApplyVelocity(self, vector3d(0,0, 10));
+                        ApplyVelocity(self, vector3d(0,0, self->jump));
 
         }
         else

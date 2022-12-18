@@ -30,7 +30,8 @@ typedef struct Entity_S
     float       depth;
 
 
-
+    float       jump;
+    float       damageBase;
 
     float       iFrame; //0 for false (can be damaged) 1 for true (invincible)
     int         iFrameMax;

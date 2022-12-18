@@ -32,7 +32,7 @@ void projectile_think(Entity *self)
         if(nearest == NULL) return;
         if(self && nearest && BadCollisionCheck(self, nearest) == 1)
         {
-         DoDamage(player, nearest, 25);
+         DoDamage(player, nearest, 250);
          Vector3D knockback = vector3d(nearest->position.x - player->position.x,nearest->position.y - player->position.y,5);
          vector3d_normalize(&knockback);
          knockback.x = knockback.x * 1.5;

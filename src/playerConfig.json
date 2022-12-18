@@ -1,0 +1,17 @@
+{
+
+
+    "player":
+    {
+        "speed":2.5,
+
+        "sprint":4,
+
+        "jump":5,
+
+        "damage": 250
+
+    }
+
+
+}

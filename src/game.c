@@ -1,10 +1,12 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
+//#include <SDL2/SDL_mixer.h>
 #include <math.h>
 #include "simple_logger.h"
 #include "gfc_input.h"
 #include "gfc_vector.h"
 #include "gfc_matrix.h"
+#include "gfc_audio.h"
 
 #include "gf3d_vgraphics.h"
 #include "gf3d_pipeline.h"
@@ -87,9 +89,23 @@ int main(int argc,char *argv[])
     entity_system_init(1024);
 
 
+//AUDIO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
+//Mix_Music *gMusic = NULL;
+//SDL_Init(  SDL_INIT_AUDIO );
+//Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
+
+    gfc_audio_init(4, 4, 4, 4, 1, 1);
+
+    Sound  * titleMusic = gfc_sound_load("audio/title.mp3",100,0);
+    Sound  * dayMusic = gfc_sound_load("audio/day.mp3",100,0);
+    Sound  * nightMusic = gfc_sound_load("audio/night.mp3",100,0);
 
 
-    
+    gfc_sound_play(titleMusic,-1,100,1,1);
+
+    int nightFlag = 0;
+
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
     healthBar = gf3d_sprite_load("images/healthBar.png", 1000, 40, 1);
     crosshair = gf3d_sprite_load("images/crosshair.png", 32,32,1);
@@ -153,20 +169,22 @@ int main(int argc,char *argv[])
     //WULF
 
     //ENEMY SPAWNS
+    /*
     Entity* blackMush = mushroom_black_new(vector3d(600,-600,30));
     Entity* redMush = mushroom_red_new(vector3d(500,-500,30));
     Entity* greenMush = mushroom_green_new(vector3d(400,-400,30));
     Entity* blueMush = mushroom_blue_new(vector3d(300,-300,30));
     //Entity* greenSmallMush = mushroom_green_small_new(vector3d(700,-700,30));
     Entity* bfmMush = mushroom_bfm_new(vector3d(200,-200,30));
-
+*/
+    /*
 
     Entity* healthBarrel = barrel_health_new(vector3d(1200, -1200, 30));
     Entity* experienceBarrel = barrel_experience_new(vector3d(1250, -1200, 30));
     Entity* jumpBarrel = barrel_jump_new(vector3d(1300, -1200, 30));
     Entity* mimicBarrel = barrel_mimic_new(vector3d(1350, -1200, 30));
     Entity* trapBarrel = barrel_trap_new(vector3d(1400, -1200, 30));
-
+*/
 
     Entity* sky1 = sky_new(vector3d(0,2000,0), vector3d(0,0,0));
     Entity* sky2 = sky_new(vector3d(0,-2000,0),vector3d(0,0,0));
@@ -175,6 +193,13 @@ int main(int argc,char *argv[])
     Entity* sky4 = sky_new(vector3d(-2000,0,0), vector3d(0,0,1.57));
 
     Entity* sky5 = sky_new(vector3d(400,500,3000), vector3d(1.57,0,0));
+
+
+
+
+
+
+
 
 
     //Vector3D Test = GetSize(agu);
@@ -220,6 +245,7 @@ int main(int argc,char *argv[])
          * MAKE THIS NOT ACTUALLY DRAW EVENTUALLY IDK
          *
 
+
         wireTest->scale.z = player->size.x;
         wireTest->rotation.z = player->rotation.z;
         wireTest->position.x = player->position.x+100;
@@ -246,6 +272,31 @@ int main(int argc,char *argv[])
 
 
 
+        if(nightFlag == 1)
+        {
+            float num = gfc_random()*1000;
+
+            if(num > 998)
+            {
+                mushroom_red_new(vector3d(gfc_random()*500+500,gfc_random()*500-500,30));
+
+            }
+            else if(num > 996)
+            {
+                mushroom_blue_new(vector3d(gfc_random()*500,gfc_random()*500,30));
+
+            }
+            else if(num > 994)
+            {
+                mushroom_blue_new(vector3d(gfc_random()*1000,gfc_random()*1000,30));
+
+            }
+            else if(num > 992)
+            {
+                mushroom_green_new(vector3d(gfc_random()*1000,gfc_random()*1000,30));
+
+            }
+        }
         //while(GameState == 1)//DO TITLE STUFF
         //{
 /*
@@ -326,6 +377,8 @@ int main(int argc,char *argv[])
                                     {
                                         GameState = 2;
                                         broke = 1;
+                                        gfc_sound_play(dayMusic,-1,100,1,1);
+
                                         break;
                                     }
 
@@ -333,6 +386,7 @@ int main(int argc,char *argv[])
                 if(broke == 1)
                 {
                     broke = 0;
+
                     continue;
                 }
                 slog("BROKE OUT I GUESS");
@@ -441,6 +495,19 @@ int main(int argc,char *argv[])
             player->rotation.x = -3.14;
             player->rotation.z = 0.5;
             snapCamera = 1;
+        }
+        if(gfc_input_key_pressed("k"))
+        {
+         Entity* night1 = night_new(vector3d(0,1980,0), vector3d(0,0,0));
+    Entity* night2 = night_new(vector3d(0,-1980,0),vector3d(0,0,0));
+    Entity* night3 = night_new(vector3d(1980,0,0), vector3d(0,0,1.57));
+
+    Entity* night4 = night_new(vector3d(-1480,0,0), vector3d(0,0,1.57));
+
+    Entity* night5 = night_new(vector3d(400,500,2980), vector3d(1.57,0,0));
+    nightFlag = 1;
+                                            gfc_sound_play(nightMusic,-1,100,1,1);
+
         }
         if(gfc_input_key_pressed("ESCAPE"))
         {
