@@ -37,6 +37,7 @@
 #include "barrel_jump.h"
 
 #include "fence.h"
+#include "npc.h"
 
 
 extern int __DEBUG;
@@ -90,11 +91,14 @@ int main(int argc,char *argv[])
 
 
     // QUEST STUFF
-    int currentQuest = 0; //1-3
+    int currentQuest = 1; //1-3
     Sprite* quest1Sign = gf3d_sprite_load("images/quest1.png", 1040,1040,1);
     Sprite* quest2Sign = gf3d_sprite_load("images/quest2.png", 1040,1040,1);
     Sprite* quest3Sign = gf3d_sprite_load("images/quest3.png", 1040,1040,1);
+    Sprite* quest4Sign = gf3d_sprite_load("images/quest4.png", 1040,1040,1);
 
+
+    Entity* hector = npc_new(vector3d(1500,-1500,20));
 
 //AUDIO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
@@ -231,7 +235,9 @@ int main(int argc,char *argv[])
 
 
 
-
+    int quest1Tracker = 0;
+    int quest2Tracker = 0;
+    int quest3Tracker = 0;
 
 
     //Vector3D Test = GetSize(agu);
@@ -388,6 +394,10 @@ int main(int argc,char *argv[])
                 {
                      gfc_input_update();
 
+
+
+
+
         SDL_GetMouseState(&mousex,&mousey);
         gf3d_vgraphics_render_start();
 
@@ -403,8 +413,7 @@ int main(int argc,char *argv[])
 
                                     gf3d_vgraphics_render_end();
 
-
-
+/*
                                     if(gfc_input_key_pressed("l"))
                                     {
                                         GameState = 2;
@@ -413,6 +422,26 @@ int main(int argc,char *argv[])
 
                                         break;
                                     }
+                                    */
+SDL_Event e;
+    while(SDL_PollEvent(&e)){
+        switch(e.type){
+            case SDL_QUIT:
+                //running = false;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                //do whatever you want to do after a mouse button was pressed,
+                // e.g.:
+                GameState = 2;
+                                        broke = 1;
+                                        gfc_sound_play(dayMusic,-1,100,1,1);
+                //mousePress(e.button);
+                break;
+
+        }
+    }
+
+
 
                 }
                 if(broke == 1)
@@ -492,6 +521,47 @@ int main(int argc,char *argv[])
 
                     }
 
+                     //QUEST TRACKING
+                     if(player->currentQuest == 1)
+                     {
+                      if( gfc_input_key_pressed(" "))
+                      {
+                            quest1Tracker++;
+                            if(quest1Tracker >= 5) player->currentQuest = 2;
+                      }
+                     }
+
+                     if(player->currentQuest == 3)
+                     {
+                      if(player->level >= 10)
+                      {
+                       player->currentQuest = 4;
+                      }
+                     }
+                    slog("CURRENT QUEST %i", player->currentQuest);
+                    if(player->displayQuest == 1)
+                    {
+                     switch(player->currentQuest)
+                     {
+                         case 1:
+                                gf3d_sprite_draw(quest1Sign, vector2d(screenWidth/2, screenHeight/2), vector2d(1,1), 1);
+                             break;
+                         case 2:
+                                gf3d_sprite_draw(quest2Sign, vector2d(screenWidth/2, screenHeight/2), vector2d(1,1), 1);
+
+                             break;
+                         case 3:
+                                gf3d_sprite_draw(quest3Sign, vector2d(screenWidth/2, screenHeight/2), vector2d(1,1), 1);
+
+                             break;
+                         case 4:
+                                gf3d_sprite_draw(quest4Sign, vector2d(screenWidth/2, screenHeight/2), vector2d(1,1), 1);
+
+                             break;
+
+
+                     }
+                    }
 
                 //slog("UHH %i", player->level);
                     //if(player->level >=1)gf3d_sprite_draw(doubleJump,vector2d(screenWidth-500, screenHeight-500), vector2d(1,1), 1);

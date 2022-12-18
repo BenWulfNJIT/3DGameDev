@@ -38,6 +38,12 @@ void DoDamage(Entity* attacker, Entity* receiver, int damage)
                     attacker->experience = 0;
                     attacker->skillPoints++;
                 }
+
+                if(attacker->currentQuest == 2)
+                {
+                 attacker->mobKillCount++;
+                    if(attacker->mobKillCount >= 5) attacker->currentQuest = 3;
+                }
                 //entity_free(receiver);
                 return;
             }

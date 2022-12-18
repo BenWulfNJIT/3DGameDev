@@ -83,6 +83,8 @@ Entity *player_new(Vector3D position)
     ent->cameraMove = vector2d(0,0);
     ent->type = 0;
     ent->moveType = 0;
+    ent->mobKillCount = 0;
+    ent->currentQuest = 1;
     ent->currentSpeed = 0;
     ent->maxWalkSpeed = playerWalkv;
     ent->maxRunSpeed = playerSprintv;

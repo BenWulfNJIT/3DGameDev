@@ -29,9 +29,11 @@ typedef struct Entity_S
     float       width;
     float       depth;
 
-
+    Uint8       displayQuest;
     float       jump;
     float       damageBase;
+    int         mobKillCount;
+    int         currentQuest;
 
     float       iFrame; //0 for false (can be damaged) 1 for true (invincible)
     int         iFrameMax;
